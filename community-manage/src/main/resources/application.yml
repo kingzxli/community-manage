@@ -1,0 +1,37 @@
+server:
+  port: 8081
+
+## mysql
+spring:
+  datasource:
+    url:  jdbc:mysql://106.52.167.184:3306/community?useUnicode=true&characterEncoding=utf-8&autoReconnect=true&useSSL=false
+    username: root
+    password: pwkingzxli1991
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    
+# 输出sql
+logging:
+  level:
+    com.community.mapper: debug
+    
+# mybatisplus 逻辑删除
+mybatis-plus:
+  global-config:
+    db-config:     
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+

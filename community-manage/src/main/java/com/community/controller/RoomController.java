@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.community.entity.Result;
 import com.community.entity.Room;
+import com.community.entity.vo.RoomVo;
 import com.community.service.RoomService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -20,21 +21,20 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 public class RoomController {
 	
-	
 	@Autowired
 	private RoomService roomService;
+	
+	@ApiOperation(value = "列表查询")
+	@GetMapping("/room")
+	public Result<List<RoomVo>> list(RoomVo room) {		
+		List<RoomVo> list = roomService.list(room);
+		return new Result<>(list);
+	}
 	
 	@ApiOperation(value = "单记录查询")
 	@GetMapping("/room/{roomId}")
 	public Result<Room> getroomById(@PathVariable(name="roomId") String roomId) {				
 		return new Result<>(roomService.getById(roomId));
-	}
-	
-	@ApiOperation(value = "列表查询")
-	@GetMapping("/room")
-	public Result<List<Room>> list(Room room) {		
-		List<Room> list = roomService.list(room);
-		return new Result<>(list);
 	}
 	
 	@ApiOperation(value = "修改")

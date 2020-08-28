@@ -20,7 +20,7 @@ public class BillServiceImpl implements BillService{
 	}
 
 	@Override
-	public List<BillVo> selectBill(BillVo bill) {			
+	public List<BillVo> selectBill(BillVo bill) {	
 		return billMapper.selectBill(bill);
 	}
 

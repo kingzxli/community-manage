@@ -14,5 +14,7 @@ public interface BuildService {
 	void updateById(Build build);
 
 	void insert(Build build);
+	
+    String insertByName(String communityId,String buildName);
 
 }

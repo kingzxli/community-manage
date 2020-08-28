@@ -24,7 +24,7 @@ public class repair implements Serializable{
 	private String roomId;
 	
 	@ApiModelProperty(value = "报修状态(1:已处理,0:未处理)")
-	private String month;
+	private String repairStatus;
 	
 	@ApiModelProperty(value = "是否删除(1:是，0:否)")
 	@TableLogic

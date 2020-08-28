@@ -15,5 +15,7 @@ public interface UnitService {
 	void updateById(Unit unit);
 
 	void insert(Unit unit);
+	
+	String insertByName(String buildId,String unitName);
 
 }

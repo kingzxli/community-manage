@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.community.entity.Result;
 import com.community.entity.User;
@@ -60,6 +62,16 @@ public class UserController {
 		user.setCreatedTime(new Date());
 		
 		userService.insert(user);
+		return Result.SUCCESS;
+	}
+	
+	/**
+	 * 导入
+	 * @param file
+	 */
+	@PostMapping("/import")
+	public Result<?> importUserDate(@RequestParam("file") MultipartFile file) {
+		userService.importUserData(file);
 		return Result.SUCCESS;
 	}
 

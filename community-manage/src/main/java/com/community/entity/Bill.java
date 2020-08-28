@@ -38,6 +38,15 @@ public class Bill implements Serializable{
 	@ApiModelProperty(value = "备注")
 	private String remark;
 	
+	@ApiModelProperty(value = "缴费人微信Id")
+	private String payWxId;
+	
+	@ApiModelProperty(value = "缴费人电话")
+	private String payPhone;
+	
+	@ApiModelProperty(value = "缴费人姓名")
+	private String payName;
+	
 	@ApiModelProperty(value = "是否删除(1:是，0:否)")
 	@TableLogic
 	private Integer isDelete;
@@ -53,14 +62,5 @@ public class Bill implements Serializable{
 	
 	@ApiModelProperty(value = "修改时间")
 	private Date modifiedTime;
-	
-	@ApiModelProperty(value = "缴费人微信Id")
-	private String payWxId;
-	
-	@ApiModelProperty(value = "缴费人电话")
-	private String payPhone;
-	
-	@ApiModelProperty(value = "缴费人姓名")
-	private String payName;
 	
 }

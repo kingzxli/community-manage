@@ -1,5 +1,6 @@
 package com.community.service.impl;
 
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -7,6 +8,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.community.entity.Build;
 import com.community.mapper.BuildMapper;
 import com.community.service.BuildService;
+import com.community.util.IdMaker;
 
 @Service
 public class BuildServiceImpl implements BuildService{
@@ -41,6 +43,26 @@ public class BuildServiceImpl implements BuildService{
 		
 	}
 
+	@Override
+	public String insertByName(String communityId,String buildName) {
+		Build build = new Build();
+		build.setCommunityId(communityId);
+		build.setBuildName(buildName);
+		QueryWrapper<Build> wrapper = new QueryWrapper<>(build);
+		List<Build> list = buildMapper.selectList(wrapper);
+		
+		if(list == null || list.isEmpty()) {
+			build.setId(IdMaker.get());
+			build.setIsDelete(0);
+			build.setCreatedUser("system");
+			build.setCreatedTime(new Date());
+			buildMapper.insert(build);
+			
+			return build.getId();
+		}else {
+			return list.get(0).getId();
+		}
+	}
 	
 	
 }

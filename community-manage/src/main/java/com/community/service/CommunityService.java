@@ -15,5 +15,7 @@ public interface CommunityService {
 	void updateById(Community community);
 
 	void insert(Community community);
+	
+	String insertByName(String communityName);
 
 }

@@ -3,7 +3,6 @@ package com.community.entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 
@@ -29,13 +28,10 @@ public class Room implements Serializable{
 	@ApiModelProperty(value = "单元Id")
 	private String unitId;
 	
-	@ApiModelProperty(value = "单价")
-	private BigDecimal unitPrice;
-	
 	@ApiModelProperty(value = "面积(m2)")
 	private BigDecimal area;
 	
-	@ApiModelProperty(value = "类型(1:住宅,2:车库,3:商铺)")
+	@ApiModelProperty(value = "类型(1:住宅,,2:商铺,3:车库)")
 	private Integer type;
 	
 	@ApiModelProperty(value = "是否删除(1:是，0:否)")

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.community.mapper.RoomMapper">
+
+	<select id="roomList" resultType="com.community.entity.vo.RoomVo" parameterType="com.community.entity.vo.RoomVo">
+		SELECT
+			b.id,
+			a.name,
+			a.wx_name,
+			a.phone,
+			e.community_name,
+			e.community_address,
+			d.build_name,
+			c.unit,
+			b.room,
+			b.area,
+			b.type 
+		FROM
+			room b
+			LEFT JOIN unit c ON b.unit_id = c.id
+			LEFT JOIN build d ON c.build_id = d.id
+			LEFT JOIN community e ON d.community_id = e.id
+			LEFT JOIN user a ON b.user_id = a.id 
+		WHERE
+			b.is_delete = 0
+		<if test="wxName != null and wxName != '' ">			
+			AND a.wx_name like concat('%',#{wxName},'%')
+		</if>
+		<if test="name != null and name != '' ">			
+			AND a.name like concat('%',#{name},'%')
+		</if>
+		<if test="phone != null and phone != '' ">			
+			AND a.phone like concat('%',#{phone},'%')
+		</if>		
+		<if test="communityName != null and communityName != '' ">			
+			AND e.community_name like concat('%',#{communityName},'%')
+		</if>
+		<if test="communityId != null and communityId != '' ">			
+			AND d.community_id = #{communityId}
+		</if>
+		<if test="buildId != null and buildId != '' ">			
+			AND c.build_id = #{buildId}
+		</if>
+		<if test="unitId != null and unitId != '' ">			
+			AND b.unit_id = #{unitId}
+		</if>
+		<if test="room != null and room != '' ">			
+			AND b.room = #{room}
+		</if>
+		<if test="type != null ">			
+			AND b.type = #{type}
+		</if>
+	</select>
+
+</mapper>
+	
+	
+	
+	
+	
