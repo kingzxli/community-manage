@@ -21,8 +21,14 @@ mybatis-plus:
     db-config:     
       logic-delete-value: 1
       logic-not-delete-value: 0
-
-
+      
+# 微信支付参数
+appid: wx23db2e5b441b70fc
+mch_id: 1601076593
+notify_url: http://www.weixin.qq.com/wxpay/pay.php
+type: JSAPI
+key: changshengwuye202008121458000000
+wxpay_url: https://api.mch.weixin.qq.com/pay/unifiedorder
 
 
 

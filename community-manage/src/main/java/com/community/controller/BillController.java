@@ -27,7 +27,7 @@ public class BillController {
 	@ApiOperation(value = "列表查询")
 	@GetMapping("/bill")
 	public Result<List<BillVo>> selectBill(BillVo bill) {		
-		List<BillVo> list = billService.selectBill(bill);
+		List<BillVo> list = billService.selectBill(bill);		
 		return new Result<>(list);
 	}
 	
