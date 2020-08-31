@@ -1,10 +1,10 @@
 package com.community.controller;
 
 import java.math.BigDecimal;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.community.entity.Result;
 import com.community.service.WXpayService;
 import io.swagger.annotations.Api;
 
@@ -16,9 +16,9 @@ public class WXpayController {
 	private WXpayService wxpayService;
 	
 	@PostMapping("/wxpay")
-	public Result<?> wxpay(BigDecimal totalFee,String openId) {
-		wxpayService.wxpay(totalFee,openId);		
-		return Result.SUCCESS;
+	public Map<String,String> wxpay(BigDecimal totalFee,String openId) {
+				
+		return wxpayService.wxpay(totalFee,openId);
 		
 	}
 

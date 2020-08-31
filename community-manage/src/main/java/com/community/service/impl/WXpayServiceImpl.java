@@ -3,6 +3,7 @@ package com.community.service.impl;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.InetAddress;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.http.HttpEntity;
@@ -42,7 +43,7 @@ public class WXpayServiceImpl implements WXpayService{
 	private String WXPAYURL;
 
 	@Override
-	public void wxpay(BigDecimal totalFee,String openId) {	
+	public Map<String,String> wxpay(BigDecimal totalFee,String openId) {	
 		//将金额(元)转换为分
 		Assert.notNull(totalFee, "金额不能为空");
 		
@@ -69,7 +70,7 @@ public class WXpayServiceImpl implements WXpayService{
 			requestDataMap.put("notify_url", NOTIFYURL); //异步接受回调用地址，url必须为外网可访问路径
 			requestDataMap.put("trade_type", TYPE); //交易类型
 			requestDataMap.put("product_id", IdMaker.get()); //商品Id
-			requestDataMap.put("openid", openId);
+			requestDataMap.put("openid", openId);			
 			//签名
 			String signinValue = WXPayUtil.generateSignature(requestDataMap, KEY);
 			requestDataMap.put("sign", signinValue); //签名
@@ -86,6 +87,10 @@ public class WXpayServiceImpl implements WXpayService{
 		//判断支付结果	
 		Assert.isTrue(responseDataMap != null && "SUCCESS".equals(responseDataMap.get("return_code")), "支付通讯失败");		
 		Assert.isTrue("SUCCESS".equals(responseDataMap.get("result_code")), "支付失败");
+		responseDataMap.put("timeStamp", ""+new Date().getTime());
+		responseDataMap.put("signType", "MD5");
+		
+		return responseDataMap;
 	}
 
 	/**

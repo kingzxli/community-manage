@@ -1,10 +1,11 @@
 package com.community.service;
 
 import java.math.BigDecimal;
+import java.util.Map;
 
 public interface WXpayService {
 
-	void wxpay(BigDecimal totalFee,String openId);
+	Map<String,String> wxpay(BigDecimal totalFee,String openId);
 
 	
 
