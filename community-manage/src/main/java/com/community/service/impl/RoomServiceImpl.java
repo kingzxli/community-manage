@@ -11,7 +11,6 @@ import com.community.entity.vo.RoomVo;
 import com.community.mapper.RoomMapper;
 import com.community.service.RoomService;
 import com.community.util.IdMaker;
-import com.github.pagehelper.PageHelper;
 
 
 @Service
@@ -26,8 +25,8 @@ public class RoomServiceImpl implements RoomService{
 	}
 
 	@Override
-	public List<RoomVo> list(RoomVo room) {			
-		List<RoomVo> list = roomMapper.roomList(room);			
+	public List<RoomVo> list(RoomVo room) {				
+		List<RoomVo> list = roomMapper.roomList(room);	
 		
 		/**
 		 * 物业服务费：0.5*area
@@ -37,7 +36,7 @@ public class RoomServiceImpl implements RoomService{
 		 */
 		for(RoomVo dbRoom : list) {
 			BigDecimal billAmount = new BigDecimal(0);
-			//1:住宅,2:车库,3:商铺
+			//1:住宅,2:商铺,3:车库
 			Integer type = dbRoom.getType();
 			BigDecimal area = dbRoom.getArea();
 			
@@ -47,8 +46,8 @@ public class RoomServiceImpl implements RoomService{
 				billAmount = area.multiply(new BigDecimal(0.5));
 				billAmount = billAmount.add(new BigDecimal(120 + 96));
 			}
-			
-			dbRoom.setBillAmount(billAmount);
+		
+			dbRoom.setBillAmount(billAmount.setScale(2,BigDecimal.ROUND_HALF_UP));
 		}
 		
 		return list;
@@ -71,14 +70,13 @@ public class RoomServiceImpl implements RoomService{
 	}
 
 	@Override
-	public void insertByName(String unitId, String roomName,BigDecimal area,Integer type, String userId) {
+	public String insertByName(String unitId, String roomName,BigDecimal area,Integer type) {
 		Room room = new Room();
 		room.setUnitId(unitId);
 		room.setRoom(roomName);
 		QueryWrapper<Room> wrapper = new QueryWrapper<>(room);
 		List<Room> list = roomMapper.selectList(wrapper);
-		
-		room.setUserId(userId);
+				
 		room.setType(type);
 		if(list == null || list.isEmpty()) {
 			room.setArea(area);
@@ -86,11 +84,13 @@ public class RoomServiceImpl implements RoomService{
 			room.setIsDelete(0);
 			room.setCreatedUser("system");
 			room.setCreatedTime(new Date());
-			roomMapper.insert(room);						
+			roomMapper.insert(room);			
 		}else {
 			room.setId(list.get(0).getId());			
 			roomMapper.updateById(room);			
 		}
+		
+		return room.getId();
 	}
 
 	

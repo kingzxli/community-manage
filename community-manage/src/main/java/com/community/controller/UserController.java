@@ -70,9 +70,9 @@ public class UserController {
 	 * @param file
 	 */
 	@PostMapping("/import")
-	public Result<?> importUserDate(@RequestParam("file") MultipartFile file) {
-		userService.importUserData(file);
-		return Result.SUCCESS;
+	public Result<Integer> importUserDate(@RequestParam("file") MultipartFile file) {
+		Integer num =userService.importUserData(file);
+		return new Result<Integer>(num);
 	}
 
 }

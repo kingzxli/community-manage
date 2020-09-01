@@ -37,6 +37,9 @@ public class User implements Serializable{
 	@ApiModelProperty(value = "角色Id")
 	private String roleId;
 	
+	@ApiModelProperty(value = "房间Id")
+	private String roomId;
+	
 	@ApiModelProperty(value = "是否删除(1:是，0:否)")
 	@TableLogic
 	private Integer isDelete;

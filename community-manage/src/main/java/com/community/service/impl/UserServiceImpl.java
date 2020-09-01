@@ -59,37 +59,35 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public void insert(User user) {
-		userMapper.insert(user);
-		
+		userMapper.insert(user);		
 	}
 	
-	public String insertByPhone(String phone,String userName) {
+	public void insertByPhone(String phone,String userName,String roomId) {
 		User user = new User();
 		user.setPhone(phone);
 		QueryWrapper<User> wrapper = new QueryWrapper<>(user);
 		List<User> list = userMapper.selectList(wrapper);
 		
+		user.setName(userName);
+		user.setRoomId(roomId);
 		if(list == null || list.isEmpty()) {
 			user.setId(IdMaker.get());
-			user.setName(userName);
 			user.setIsDelete(0);
 			user.setCreatedUser("system");
 			user.setCreatedTime(new Date());
-			userMapper.insert(user);
-			
-			return user.getId();
+			userMapper.insert(user);					
 		}else {
-			return list.get(0).getId();
+			userMapper.updateById(user);
 		}
 	}
 
 	@Override
-	public void importUserData(MultipartFile file) {
+	public Integer importUserData(MultipartFile file) {
 		//获取sheet
 		Sheet sheet = Poi.read(file);
 		// 得到Excel的行数
 		int totalRows = sheet.getPhysicalNumberOfRows();		
-		
+		Integer num = 0;
 		// 统计错误信息
 		StringBuilder error = new StringBuilder();		
 		for (int i = 1; i < totalRows; i++) {
@@ -99,14 +97,18 @@ public class UserServiceImpl implements UserService{
 					continue;
 				}	
 				//excel 格式 0:序号，1:楼盘名称，2:楼栋名称，3:单元，4:房号，5:面积，6:房间类型，7:姓名，8:电话
-				String communityName = row.getCell(1).getStringCellValue();
-				String buildName = row.getCell(2).getStringCellValue();
-				String unitName = ""+row.getCell(3).getNumericCellValue();		
-				String roomName = row.getCell(4).getStringCellValue();
-				String areaVo = ""+row.getCell(5).getNumericCellValue();
-				String typeVo= row.getCell(6).getStringCellValue();
-				String name = row.getCell(7).getStringCellValue();
-				String phone = ""+row.getCell(8).getNumericCellValue();
+				String communityName = Poi.getStringValueFromCell(row.getCell(1));
+				String buildName = Poi.getStringValueFromCell(row.getCell(2));
+				String unitName = Poi.getStringValueFromCell(row.getCell(3));
+				String roomName = Poi.getStringValueFromCell(row.getCell(4));
+				String areaVo = Poi.getStringValueFromCell(row.getCell(5));
+				String typeVo= Poi.getStringValueFromCell(row.getCell(6));
+				String name = Poi.getStringValueFromCell(row.getCell(7));
+				String phone = Poi.getStringValueFromCell(row.getCell(8));
+				String name1 = Poi.getStringValueFromCell(row.getCell(9));
+				String phone1 = Poi.getStringValueFromCell(row.getCell(10));
+				String name2 = Poi.getStringValueFromCell(row.getCell(11));
+				String phone2 = Poi.getStringValueFromCell(row.getCell(12));
 				
 				//检查数据是否为空
 				if(StringUtils.isEmpty(communityName)) {
@@ -152,14 +154,22 @@ public class UserServiceImpl implements UserService{
 				String communityId = communityService.insertByName(communityName);
 				String buildId = buildService.insertByName(communityId,buildName);
 				String unitId = unitService.insertByName(buildId,unitName);
-				String userId = this.insertByPhone(phone,name);
-				roomService.insertByName(unitId,roomName,area,type,userId);		
+				String roomId = roomService.insertByName(unitId,roomName,area,type);
+				this.insertByPhone(phone,name,roomId);
+				if(!StringUtils.isEmpty(name1) && !StringUtils.isEmpty(phone1)) {
+					this.insertByPhone(phone1,name1,roomId);
+				}
+				if(!StringUtils.isEmpty(name2) && !StringUtils.isEmpty(phone2)) {
+					this.insertByPhone(phone2,name2,roomId);
+				}
+				num++;	
 			} catch (Exception e) {
 				
 			}
 						
 		}
-		Assert.isTrue(StringUtils.isEmpty(error), error.toString());		
+		Assert.isTrue(StringUtils.isEmpty(error), error.toString());
+		return num;		
 		
 	}
 

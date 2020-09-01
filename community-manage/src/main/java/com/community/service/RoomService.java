@@ -17,6 +17,6 @@ public interface RoomService {
 
 	void insert(Room room);
 	
-	void insertByName(String unitId,String roomName,BigDecimal area,Integer type,String userId);
+	String insertByName(String unitId,String roomName,BigDecimal area,Integer type);
 
 }

@@ -18,6 +18,6 @@ public interface UserService {
 
 	void insert(User user);
 
-	void importUserData(MultipartFile file);
+	Integer importUserData(MultipartFile file);
 
 }

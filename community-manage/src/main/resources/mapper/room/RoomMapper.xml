@@ -21,7 +21,7 @@
 			LEFT JOIN unit c ON b.unit_id = c.id
 			LEFT JOIN build d ON c.build_id = d.id
 			LEFT JOIN community e ON d.community_id = e.id
-			LEFT JOIN user a ON b.user_id = a.id 
+			LEFT JOIN user a ON a.room_id = b.id 
 		WHERE
 			b.is_delete = 0
 		<if test="wxName != null and wxName != '' ">			
@@ -51,6 +51,7 @@
 		<if test="type != null ">			
 			AND b.type = #{type}
 		</if>
+		
 	</select>
 
 </mapper>
