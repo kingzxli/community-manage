@@ -2,14 +2,16 @@ package com.community.controller;
 
 import java.io.IOException;
 import java.net.URLEncoder;
-import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 public class WXLogin {
 	
 	@Value("${appid}")
@@ -30,9 +32,12 @@ public class WXLogin {
 	@Value("${wxpay_url}")
 	private String WXPAYURL;
 	
-	@GetMapping("/index")
-	public String index() {
-		return "index";
+	@GetMapping("/index/{name}")
+	public List<String> index(@PathVariable(name="name")String name) {
+		List<String> list = new ArrayList<>();
+		list.add(name);
+		list.add(name+"2号");
+		return list;
 	}
 	
 	@RequestMapping("/admin/login")

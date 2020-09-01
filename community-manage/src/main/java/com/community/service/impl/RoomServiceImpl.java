@@ -11,6 +11,7 @@ import com.community.entity.vo.RoomVo;
 import com.community.mapper.RoomMapper;
 import com.community.service.RoomService;
 import com.community.util.IdMaker;
+import com.github.pagehelper.PageHelper;
 
 
 @Service
@@ -26,7 +27,7 @@ public class RoomServiceImpl implements RoomService{
 
 	@Override
 	public List<RoomVo> list(RoomVo room) {			
-		List<RoomVo> list = roomMapper.roomList(room);
+		List<RoomVo> list = roomMapper.roomList(room);			
 		
 		/**
 		 * 物业服务费：0.5*area
