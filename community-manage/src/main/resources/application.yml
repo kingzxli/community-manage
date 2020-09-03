@@ -25,7 +25,7 @@ mybatis-plus:
 # 微信支付参数
 appid: wx23db2e5b441b70fc
 mch_id: 1601076593
-notify_url: http://changshengwuye.cn/index.html
+notify_url: http://changshengwuye.cn/zcw/index.html
 type: JSAPI
 key: changshengwuye202008121458000000
 wxpay_url: https://api.mch.weixin.qq.com/pay/unifiedorder
