@@ -3,7 +3,6 @@ package com.community.service.impl;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.InetAddress;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.http.HttpEntity;
@@ -61,20 +60,21 @@ public class WXpayServiceImpl implements WXpayService{
 			String nonceStr = WXPayUtil.generateNonceStr();			
 			
 			requestDataMap.put("appid", APPID); //公众号id
-			requestDataMap.put("mch_id", MCHID); //商户号
+			requestDataMap.put("mch_id", MCHID); //商户号					
 			requestDataMap.put("nonce_str", nonceStr); //随机字符串
-			requestDataMap.put("body", "物业管理费缴纳"); //商品描述
+			requestDataMap.put("body", "物业管理费缴纳"); //商品描述	
 			requestDataMap.put("out_trade_no", IdMaker.get()); //商户订单号
 			requestDataMap.put("total_fee", ""+amountInt); //订单金额,单位为分
 			requestDataMap.put("spbill_create_ip", hostAddress); //Native 支付填调用微信支付API的机器IP
 			requestDataMap.put("notify_url", NOTIFYURL); //异步接受回调用地址，url必须为外网可访问路径
-			requestDataMap.put("trade_type", TYPE); //交易类型
-			requestDataMap.put("product_id", IdMaker.get()); //商品Id
-			requestDataMap.put("openid", openId);	
-			requestDataMap.put("time_stamp", ""+new Date().getTime());
+			requestDataMap.put("trade_type", "JSAPI"); //交易类型	
+			//requestDataMap.put("product_id", IdMaker.get()); //商品Id
+			requestDataMap.put("openid", openId);
+				
 			//签名
 			String signinValue = WXPayUtil.generateSignature(requestDataMap, KEY);
-			requestDataMap.put("sign", signinValue); //签名
+			requestDataMap.put("sign", signinValue); //签名			
+			//requestDataMap.put("time_stamp", ""+new Date().getTime());
 			//设置参数 xml 格式
 			String requestDataXml = WXPayUtil.mapToXml(requestDataMap);
 			String responseDataXml = this.doPostByXml(WXPAYURL, requestDataXml);
@@ -89,7 +89,7 @@ public class WXpayServiceImpl implements WXpayService{
 		Assert.isTrue(responseDataMap != null && "SUCCESS".equals(responseDataMap.get("return_code")), "支付通讯失败");		
 		Assert.isTrue("SUCCESS".equals(responseDataMap.get("result_code")), "支付失败");
 		//responseDataMap.put("time_stamp", ""+new Date().getTime());
-		responseDataMap.put("sign_type", "MD5");
+		//responseDataMap.put("sign_type", "MD5");
 		
 		return responseDataMap;
 	}
