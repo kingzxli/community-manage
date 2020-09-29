@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.community.mapper.UnitMapper">
+
+	<select id="list" resultType="com.community.entity.Unit" parameterType="com.community.entity.Unit">
+		SELECT
+			*
+		FROM			
+			unit 
+		WHERE
+			is_delete = 0
+		<if test="unit != null and unit != '' ">			
+			AND unit like concat('%',#{unit},'%')
+		</if>
+		<if test="buildId != null and buildId != '' ">			
+			AND build_id = #{buildId}
+		</if>
+			ORDER BY unit * 1
+	</select>
+
+</mapper>
+	
+	
+	
+	
+	

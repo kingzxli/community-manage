@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.community.mapper.BuildMapper">
+
+	<select id="list" resultType="com.community.entity.Build" parameterType="com.community.entity.Build">
+		SELECT
+			*
+		FROM			
+			build 
+		WHERE
+			is_delete = 0
+		<if test="buildName != null and buildName != '' ">			
+			AND build_name like concat('%',#{buildName},'%')
+		</if>
+		<if test="communityId != null and communityId != '' ">			
+			AND community_id = #{communityId}
+		</if>
+		ORDER BY build_name	 * 1	
+	</select>
+
+</mapper>
+	
+	
+	
+	
+	

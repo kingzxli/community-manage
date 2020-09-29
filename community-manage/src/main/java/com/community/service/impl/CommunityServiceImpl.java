@@ -22,8 +22,8 @@ public class CommunityServiceImpl implements CommunityService{
 	}
 
 	@Override
-	public List<Community> list() {		
-		return communityMapper.selectList(null);
+	public List<Community> list(Community community) {		
+		return communityMapper.list(community);
 	}
 
 	@Override

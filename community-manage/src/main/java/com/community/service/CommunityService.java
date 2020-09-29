@@ -8,7 +8,7 @@ public interface CommunityService {
 
 	Community getById(String communityId);
 
-	List<Community> list();
+	List<Community> list(Community community);
 
 	void delete(String communityId);
 

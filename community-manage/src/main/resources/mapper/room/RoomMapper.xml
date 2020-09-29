@@ -51,7 +51,7 @@
 		<if test="type != null ">			
 			AND b.type = #{type}
 		</if>
-		
+		ORDER BY b.room * 1
 	</select>
 
 </mapper>

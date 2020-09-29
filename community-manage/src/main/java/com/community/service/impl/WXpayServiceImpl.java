@@ -3,6 +3,7 @@ package com.community.service.impl;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.InetAddress;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.http.HttpEntity;
@@ -57,41 +58,79 @@ public class WXpayServiceImpl implements WXpayService{
 			InetAddress localhost = InetAddress.getLocalHost();
 			String hostAddress = localhost.getHostAddress();
 			//生成随机字符串
-			String nonceStr = WXPayUtil.generateNonceStr();			
+			String nonceStr = WXPayUtil.generateNonceStr();						
 			
 			requestDataMap.put("appid", APPID); //公众号id
+			requestDataMap.put("body", "payMoney"); //商品描述				
 			requestDataMap.put("mch_id", MCHID); //商户号					
 			requestDataMap.put("nonce_str", nonceStr); //随机字符串
-			requestDataMap.put("body", "物业管理费缴纳"); //商品描述	
-			requestDataMap.put("out_trade_no", IdMaker.get()); //商户订单号
-			requestDataMap.put("total_fee", ""+amountInt); //订单金额,单位为分
-			requestDataMap.put("spbill_create_ip", hostAddress); //Native 支付填调用微信支付API的机器IP
 			requestDataMap.put("notify_url", NOTIFYURL); //异步接受回调用地址，url必须为外网可访问路径
+			requestDataMap.put("openid", openId);
+			requestDataMap.put("out_trade_no", IdMaker.get()); //商户订单号
+			requestDataMap.put("spbill_create_ip", hostAddress); //Native 支付填调用微信支付API的机器IP
+			requestDataMap.put("total_fee", ""+amountInt); //订单金额,单位为分						
 			requestDataMap.put("trade_type", "JSAPI"); //交易类型	
 			//requestDataMap.put("product_id", IdMaker.get()); //商品Id
-			requestDataMap.put("openid", openId);
+			
 				
 			//签名
 			String signinValue = WXPayUtil.generateSignature(requestDataMap, KEY);
+			
 			requestDataMap.put("sign", signinValue); //签名			
 			//requestDataMap.put("time_stamp", ""+new Date().getTime());
+			System.out.println("===========" + requestDataMap);
 			//设置参数 xml 格式
 			String requestDataXml = WXPayUtil.mapToXml(requestDataMap);
 			String responseDataXml = this.doPostByXml(WXPAYURL, requestDataXml);
 			System.out.println("===========" + responseDataXml);
 			//将xml转换为map集合
-			responseDataMap = WXPayUtil.xmlToMap(responseDataXml);			
+			responseDataMap = WXPayUtil.xmlToMap(responseDataXml);		
+			
+			//判断支付结果	
+			Assert.isTrue(responseDataMap != null && "SUCCESS".equals(responseDataMap.get("return_code")), "支付通讯失败");		
+			Assert.isTrue("SUCCESS".equals(responseDataMap.get("result_code")), "支付失败");
+			System.out.println("返回参数");
+			System.out.println(responseDataMap);
+
+			
+			/**
+			 * 参数返回前端
+			 */
+			String prepay_id = "";//预支付id
+			 
+			//支付通讯成功
+			prepay_id = responseDataMap.get("prepay_id");		 
+			Map<String, String> payMap = new HashMap<String, String>();
+			 
+			payMap.put("appId", APPID);
+			 
+			payMap.put("timeStamp", new Date().getTime()+"");
+			 
+			payMap.put("nonceStr", WXPayUtil.generateNonceStr());
+			 
+			payMap.put("signType", "MD5");
+			 
+			payMap.put("package", "prepay_id=" + prepay_id);
+			 
+			String paySign= WXPayUtil.generateSignature(payMap, KEY);
+			payMap.put("paySign", paySign);
+			
+			return payMap;
+			
+			
 		} catch (Exception e) {			
 			throw new CustomException("微信支付参数解析错误");
 		}
-			
-		//判断支付结果	
-		Assert.isTrue(responseDataMap != null && "SUCCESS".equals(responseDataMap.get("return_code")), "支付通讯失败");		
-		Assert.isTrue("SUCCESS".equals(responseDataMap.get("result_code")), "支付失败");
-		//responseDataMap.put("time_stamp", ""+new Date().getTime());
-		//responseDataMap.put("sign_type", "MD5");
 		
-		return responseDataMap;
+	
+		
+			
+		 
+		
+		 
+		
+		
+		//return responseDataMap;
 	}
 
 	/**

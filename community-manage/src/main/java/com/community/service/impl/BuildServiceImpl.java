@@ -22,9 +22,8 @@ public class BuildServiceImpl implements BuildService{
 	}
 
 	@Override
-	public List<Build> list(Build build) {	
-		QueryWrapper<Build> wrapper = new QueryWrapper<>(build);
-		return buildMapper.selectList(wrapper);
+	public List<Build> list(Build build) {			
+		return buildMapper.list(build);
 	}
 
 	@Override

@@ -25,8 +25,8 @@ public class CommunityController {
 	
 	@ApiOperation(value = "列表查询")
 	@GetMapping("/community")
-	public Result<List<Community>> list() {		
-		List<Community> list = communityService.list();
+	public Result<List<Community>> list(Community community) {		
+		List<Community> list = communityService.list(community);
 		return new Result<>(list);
 	}
 	

@@ -22,9 +22,8 @@ public class UnitServiceImpl implements UnitService{
 	}
 
 	@Override
-	public List<Unit> list(Unit unit) {		
-		QueryWrapper<Unit> wrapper = new QueryWrapper<>(unit);
-		return UnitMapper.selectList(wrapper);
+	public List<Unit> list(Unit unit) {				
+		return UnitMapper.list(unit);
 	}
 
 	@Override

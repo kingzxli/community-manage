@@ -27,7 +27,7 @@ appid: wx23db2e5b441b70fc
 mch_id: 1601076593
 notify_url: http://changshengwuye.cn/zcw/index.html
 type: JSAPI
-key: changshengwuye202008121458000000
+key: changshengwuye202009081737qwaszx
 wxpay_url: https://api.mch.weixin.qq.com/pay/unifiedorder
 
 #wechat:
