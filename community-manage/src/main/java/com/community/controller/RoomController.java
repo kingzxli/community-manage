@@ -10,12 +10,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.community.entity.Page;
 import com.community.entity.Result;
 import com.community.entity.Room;
 import com.community.entity.vo.RoomVo;
 import com.community.service.RoomService;
 import com.github.pagehelper.PageInfo;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -29,8 +31,8 @@ public class RoomController {
 	@ApiOperation(value = "列表查询")
 	@GetMapping("/room")
 	public Result<List<RoomVo>> list(Page page,RoomVo room) {	
-		page.paging();
-		List<RoomVo> list = roomService.list(room);
+		page.paging();		
+		List<RoomVo> list = roomService.list(room);		
 		return new Result<>(list).total(new PageInfo<RoomVo>(list).getTotal());
 	}
 	

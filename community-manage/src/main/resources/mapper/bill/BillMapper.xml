@@ -53,6 +53,7 @@
 		<if test="roomId != null and roomId != '' ">			
 			AND a.room_id = #{roomId}
 		</if>
+		ORDER BY a.created_time desc
 	</select>
 
 </mapper>

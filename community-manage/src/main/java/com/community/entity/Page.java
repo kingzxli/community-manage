@@ -7,9 +7,6 @@ import lombok.Data;
 
 /**
  * 页面参数
- * 
- * @author Rex.Tan
- * @date 2019年7月29日 下午2:33:01
  */
 @Data
 public class Page {
@@ -27,9 +24,6 @@ public class Page {
 	private String orderBy = "";
 	/**
 	 * 分页
-	 * 
-	 * @author Rex.Tan
-	 * @date 2019年10月12日 上午11:12:33
 	 */
 	public void paging() {
 		if(StringUtils.isBlank(orderBy)) {

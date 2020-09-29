@@ -10,17 +10,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import com.community.entity.Page;
 import com.community.entity.Result;
 import com.community.entity.Unit;
 import com.community.service.UnitService;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 @Api(tags = "单元管理")
 @RestController
 public class UnitController {
-	
-	
+		
 	@Autowired
 	private UnitService UnitService;
 	
@@ -32,9 +33,10 @@ public class UnitController {
 	
 	@ApiOperation(value = "列表查询")
 	@GetMapping("/unit")
-	public Result<List<Unit>> list(Unit unit) {		
-		List<Unit> list = UnitService.list(unit);
-		return new Result<>(list);
+	public Result<List<Unit>> list(Page page,Unit unit) {						
+		page.paging();		
+		List<Unit> list = UnitService.list(unit);	
+		return new Result<>(list).total(new PageInfo<Unit>(list).getTotal());
 	}
 	
 	@ApiOperation(value = "修改")

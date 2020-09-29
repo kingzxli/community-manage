@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.community.entity.Build;
+import com.community.entity.Page;
 import com.community.entity.Result;
 import com.community.service.BuildService;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -25,9 +27,10 @@ public class BuildController {
 	
 	@ApiOperation(value = "列表查询")
 	@GetMapping("/build")
-	public Result<List<Build>> list(Build build) {		
+	public Result<List<Build>> list(Page page,Build build) {		
+		page.paging();
 		List<Build> list = buildService.list(build);
-		return new Result<>(list);
+		return new Result<>(list).total(new PageInfo<Build>(list).getTotal());
 	}
 	
 	@ApiOperation(value = "单记录查询")
