@@ -36,5 +36,5 @@ wx:
   redirect: 
     url: http://changshengwuye.cn/callBack
   response:
-    url: http://changshengwuye.cn/index.html
+    url: http://changshengwuye.cn/changsheng
     

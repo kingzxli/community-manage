@@ -102,7 +102,7 @@ public class WXLogin {
 		   //去数据库查询此微信是否绑定过手机
 //		   User user = userService.queryByOpenId(openid);
 //		   String mobile=user==null?"":user.getMobile();
-		 //  response.sendRedirect("http://changshengwuye.cn/zcw/index.html");
+		 response.sendRedirect(responseUrl);
 //		   if(null == mobile || "".equals(mobile)){
 //			   //如果无手机信息,则跳转手机绑定页面
 //			   response.sendRedirect("/front/register.html");
