@@ -30,19 +30,11 @@ type: JSAPI
 key: changshengwuye202009081737qwaszx
 wxpay_url: https://api.mch.weixin.qq.com/pay/unifiedorder
 
-#wechat:
-#  appId: wx23db2e5b441b70fc
-#  appSecret: 8fa2a01aca176430c3e1155f68346aba
-
-pagehelper:
-  helper-dialect: mysql
-  reasonable: true
-  support-methods-arguments: true
-  params: count=countSql
+appSecret: a020abed743a29c5e89eefe033d5249b
 
 wx:
   redirect: 
-    url: "http://changshengwuye.cn/index.html"
+    url: http://changshengwuye.cn/callBack
   response:
-    url: "http://changshengwuye.cn/index.html"
-
+    url: http://changshengwuye.cn/index.html
+    
