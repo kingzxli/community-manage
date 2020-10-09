@@ -1,6 +1,8 @@
 package com.community.controller;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.http.HttpEntity;
@@ -66,13 +68,14 @@ public class WXLogin {
 	   @ApiOperation(value = "微信登录接口")
 	   @RequestMapping("/login")
 	   public void wxLogin(HttpServletResponse response) throws IOException{
+		   String redirectUri = URLEncoder.encode(redirectUrl, "UTF-8");
 	       String url = "https://open.weixin.qq.com/connect/oauth2/authorize?" +
 	               "appid=APPID" +
 	               "&redirect_uri=REDIRECT_URI"+
 	               "&response_type=code" +
 	               "&scope=SCOPE" +
 	               "&state=123#wechat_redirect";	      
-	       String url2 = url.replace("APPID",APPID).replace("REDIRECT_URI",redirectUrl).replace("SCOPE","snsapi_userinfo");
+	       String url2 = url.replace("APPID",APPID).replace("REDIRECT_URI",redirectUri).replace("SCOPE","snsapi_userinfo");
 	       System.out.println("===获取code===" + url2);
 	       response.sendRedirect(url2);
 	   }
