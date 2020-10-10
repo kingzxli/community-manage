@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 80
 
 ## mysql
 spring:
@@ -36,5 +36,7 @@ wx:
   redirect: 
     url: http://changshengwuye.cn/callBack
   response:
-    url: http://changshengwuye.cn/changsheng
+    login_url: http://changshengwuye.cn:8001/zcw/#/payTheFees
+    register_url: http://changshengwuye.cn:8001/zcw/#/presentation
+    
     

@@ -2,7 +2,7 @@ package com.community.controller;
 
 import java.io.IOException;
 import java.net.URLEncoder;
-
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.http.HttpEntity;
@@ -11,13 +11,13 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 import com.alibaba.fastjson.JSONObject;
-import com.community.entity.WechatProperties;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.community.entity.User;
+import com.community.mapper.UserMapper;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
@@ -47,25 +47,15 @@ public class WXLogin {
 	@Value("${wx.redirect.url}")
 	private String redirectUrl;
 	
-	@Value("${wx.response.url}")
-	private String responseUrl;
+	@Value("${wx.response.login_url}")
+	private String responseLoginUrl;
 	
-//	@Value("${wx.getUserAccessTokenUrl}")
-//	private String getUserAccessTokenUrl;
+	@Value("${wx.response.register_url}")
+	private String responseRegisterUrl;
 	
-	@Autowired
-	private WechatProperties wechatProperties;
-	@Autowired
-	private RestTemplate restTemplate;
+	private UserMapper userMapper;
 	
-	   /**
-	    * Tea微信登录接口
-	    * https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx23db2e5b441b70fc&redirect_uri=http://changshengwuye.cn/index.html&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect
-		* code=031jd9000Do3nK1CKt200OLvoH3jd90R&state=STATE
-	    * 
-	    * @throws IOException 
-	    */
-	   @ApiOperation(value = "微信登录接口")
+	   @ApiOperation(value = "微信绑定用户")
 	   @RequestMapping("/login")
 	   public void wxLogin(HttpServletResponse response) throws IOException{
 		   String redirectUri = URLEncoder.encode(redirectUrl, "UTF-8");
@@ -90,36 +80,33 @@ public class WXLogin {
 		   System.out.println("==获取用户信息url===" + url);
 		   JSONObject jsonObject = this.doGetJson(url);
 		   //1.获取微信用户的openid
-		   String openid = jsonObject.getString("openid");		  
+		   String openId = jsonObject.getString("openid");		  
 		   //2.获取获取access_token
 		   String access_token = jsonObject.getString("access_token");
-		   String infoUrl = "https://api.weixin.qq.com/sns/userinfo?access_token=" + access_token + "&openid=" + openid
+		   String infoUrl = "https://api.weixin.qq.com/sns/userinfo?access_token=" + access_token + "&openid=" + openId
 				   + "&lang=zh_CN";
 		   //3.获取微信用户信息
 		   JSONObject userInfo = this.doGetJson(infoUrl);
 		   //至此拿到了微信用户的所有信息,剩下的就是业务逻辑处理部分了
+		   
 		   //保存openid和access_token到session
 		   System.out.println("==用户信息===" + userInfo);
 		//   request.getSession().setAttribute("openid", openid);
 		//   request.getSession().setAttribute("access_token", access_token);
 		   //去数据库查询此微信是否绑定过手机
-//		   User user = userService.queryByOpenId(openid);
-//		   String mobile=user==null?"":user.getMobile();
-		 response.sendRedirect(responseUrl);
-//		   if(null == mobile || "".equals(mobile)){
-//			   //如果无手机信息,则跳转手机绑定页面
-//			   response.sendRedirect("/front/register.html");
-//		   }else{
-//			   //否则直接跳转首页
-//			   response.sendRedirect("/front/index.html");
-//		   }
+		   User dbUser = new User();
+		   dbUser.setOpenId(openId);
+		   QueryWrapper<User> wrapper = new QueryWrapper<>(dbUser);
+		   List<User> list = userMapper.selectList(wrapper); 
+		  
+		   if(list == null || list.isEmpty()){
+			   //如果无openId信息,则跳转绑定页面
+			   response.sendRedirect(responseRegisterUrl);
+		   }else{
+			   //否则直接跳转首页
+			   response.sendRedirect(responseLoginUrl);
+		   }
 	   }	
-
-
-
-	   
-	   
-	   
 	
 
 	public static JSONObject doGetJson(String url) throws ClientProtocolException, IOException {
