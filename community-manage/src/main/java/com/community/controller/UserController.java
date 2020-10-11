@@ -64,6 +64,13 @@ public class UserController {
 		return Result.SUCCESS;
 	}
 	
+	@ApiOperation(value = "注册")
+	@PostMapping("/user/register")
+	public Result<?> register(@RequestBody User user) {			
+		userService.register(user);
+		return Result.SUCCESS;
+	}
+	
 	/**
 	 * 导入
 	 * @param file

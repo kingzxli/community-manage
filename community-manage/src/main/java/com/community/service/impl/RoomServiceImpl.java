@@ -25,7 +25,7 @@ public class RoomServiceImpl implements RoomService{
 	}
 
 	@Override
-	public List<RoomVo> list(RoomVo room) {				
+	public List<RoomVo> list(RoomVo room) {		
 		List<RoomVo> list = roomMapper.roomList(room);	
 		
 		/**
@@ -93,6 +93,4 @@ public class RoomServiceImpl implements RoomService{
 		return room.getId();
 	}
 
-	
-	
 }

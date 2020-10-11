@@ -46,4 +46,7 @@ public class RoomVo extends Room{
 	@ApiModelProperty(value = "电话")
 	private String phone;
 	
+	@ApiModelProperty(value = "openId")
+	private String openId;
+	
 }

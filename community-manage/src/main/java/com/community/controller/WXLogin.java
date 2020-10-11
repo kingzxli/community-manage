@@ -2,7 +2,6 @@ package com.community.controller;
 
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.http.HttpEntity;
@@ -13,6 +12,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSONObject;
@@ -56,8 +56,8 @@ public class WXLogin {
 	@Autowired
 	private UserMapper userMapper;
 	
-	   @ApiOperation(value = "微信绑定用户")
-	   @RequestMapping("/login")
+	   @ApiOperation(value = "获取openID")
+	   @GetMapping("/login")
 	   public void wxLogin(HttpServletResponse response) throws IOException{
 		   String redirectUri = URLEncoder.encode(redirectUrl, "UTF-8");
 	       String url = "https://open.weixin.qq.com/connect/oauth2/authorize?" +
@@ -72,7 +72,6 @@ public class WXLogin {
 	       response.sendRedirect(url2);
 	   }
 	
-	   @ApiOperation(value = "微信授权回调接口")
 	   @RequestMapping("/callBack")
 	   protected void deGet(HttpServletRequest request, HttpServletResponse response)throws Exception {
 		   //获取回调地址中的code
@@ -93,8 +92,8 @@ public class WXLogin {
 //		   System.out.println("==用户信息===" + userInfo);
 		   
 		   //至此拿到了微信用户的所有信息,剩下的就是业务逻辑处理部分了		  
-		   //   request.getSession().setAttribute("openid", openid);
-		   //   request.getSession().setAttribute("access_token", access_token);
+		   request.getSession().setAttribute("openid", openId);
+		   //request.getSession().setAttribute("access_token", access_token);
 		   //去数据库查询此微信是否绑定过手机
 		  
 		   User user = userMapper.selectByOpenId(openId); 		  

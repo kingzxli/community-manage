@@ -12,6 +12,17 @@
 			is_delete = 0		
 			AND open_id = #{openId}	
 	</select>
+	
+	<select id="selectByPhone" resultType="com.community.entity.User">
+		SELECT
+			*
+		FROM			
+			user 
+		WHERE
+			is_delete = 0		
+			AND phone = #{phone}	
+	</select>
+	
 
 </mapper>
 	

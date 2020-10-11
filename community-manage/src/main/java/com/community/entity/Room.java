@@ -31,6 +31,9 @@ public class Room implements Serializable{
 	@ApiModelProperty(value = "类型(1:住宅,,2:商铺,3:车库)")
 	private Integer type;
 	
+	@ApiModelProperty(value = "租户")
+	private String userId;
+	
 	@ApiModelProperty(value = "是否删除(1:是，0:否)")
 	@TableLogic
 	private Integer isDelete;

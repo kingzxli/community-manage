@@ -3,7 +3,6 @@ package com.community.service.impl;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.web.multipart.MultipartFile;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.community.entity.User;
 import com.community.mapper.UserMapper;
 import com.community.service.BuildService;
@@ -62,21 +60,34 @@ public class UserServiceImpl implements UserService{
 		userMapper.insert(user);		
 	}
 	
+	@Override
+	public void register(User user) {
+		//查询是否有人员信息
+		User dbUser = userMapper.selectByPhone(user.getPhone());
+		if(dbUser == null) {
+			userMapper.insert(user);	
+		}else {
+			user.setId(dbUser.getId());
+			userMapper.updateById(user);
+		}							
+	}
+	
 	public void insertByPhone(String phone,String userName,String roomId) {
 		User user = new User();
 		user.setPhone(phone);
-		QueryWrapper<User> wrapper = new QueryWrapper<>(user);
-		List<User> list = userMapper.selectList(wrapper);
-		
 		user.setName(userName);
 		user.setRoomId(roomId);
-		if(list == null || list.isEmpty()) {
+		
+		User dbUser = userMapper.selectByPhone(phone);		
+		
+		if(dbUser == null) {
 			user.setId(IdMaker.get());
 			user.setIsDelete(0);
 			user.setCreatedUser("system");
 			user.setCreatedTime(new Date());
 			userMapper.insert(user);					
 		}else {
+			user.setId(dbUser.getId());
 			userMapper.updateById(user);
 		}
 	}
