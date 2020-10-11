@@ -8,4 +8,6 @@ import com.community.entity.User;
 @Mapper
 public interface UserMapper extends BaseMapper<User>{
 
+	User selectByOpenId(String openId);
+
 }

@@ -11,11 +11,11 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.community.entity.User;
 import com.community.mapper.UserMapper;
 import io.swagger.annotations.ApiOperation;
@@ -53,6 +53,7 @@ public class WXLogin {
 	@Value("${wx.response.register_url}")
 	private String responseRegisterUrl;
 	
+	@Autowired
 	private UserMapper userMapper;
 	
 	   @ApiOperation(value = "微信绑定用户")
@@ -65,7 +66,8 @@ public class WXLogin {
 	               "&response_type=code" +
 	               "&scope=SCOPE" +
 	               "&state=123#wechat_redirect";	      
-	       String url2 = url.replace("APPID",APPID).replace("REDIRECT_URI",redirectUri).replace("SCOPE","snsapi_userinfo");
+	      // String url2 = url.replace("APPID",APPID).replace("REDIRECT_URI",redirectUri).replace("SCOPE","snsapi_userinfo");
+	       String url2 = url.replace("APPID",APPID).replace("REDIRECT_URI",redirectUri).replace("SCOPE","snsapi_base");
 	       System.out.println("===获取code===" + url2);
 	       response.sendRedirect(url2);
 	   }
@@ -80,28 +82,25 @@ public class WXLogin {
 		   System.out.println("==获取用户信息url===" + url);
 		   JSONObject jsonObject = this.doGetJson(url);
 		   //1.获取微信用户的openid
-		   String openId = jsonObject.getString("openid");		  
-		   //2.获取获取access_token
-		   String access_token = jsonObject.getString("access_token");
-		   String infoUrl = "https://api.weixin.qq.com/sns/userinfo?access_token=" + access_token + "&openid=" + openId
-				   + "&lang=zh_CN";
-		   //3.获取微信用户信息
-		   JSONObject userInfo = this.doGetJson(infoUrl);
-		   //至此拿到了微信用户的所有信息,剩下的就是业务逻辑处理部分了
+		   String openId = jsonObject.getString("openid");		
 		   
-		   //保存openid和access_token到session
-		   System.out.println("==用户信息===" + userInfo);
-		//   request.getSession().setAttribute("openid", openid);
-		//   request.getSession().setAttribute("access_token", access_token);
+		   //2.获取获取access_token
+//		   String access_token = jsonObject.getString("access_token");
+//		   String infoUrl = "https://api.weixin.qq.com/sns/userinfo?access_token=" + access_token + "&openid=" + openId
+//				   + "&lang=zh_CN";
+//		   //3.获取微信用户信息
+//		   JSONObject userInfo = this.doGetJson(infoUrl);
+//		   System.out.println("==用户信息===" + userInfo);
+		   
+		   //至此拿到了微信用户的所有信息,剩下的就是业务逻辑处理部分了		  
+		   //   request.getSession().setAttribute("openid", openid);
+		   //   request.getSession().setAttribute("access_token", access_token);
 		   //去数据库查询此微信是否绑定过手机
-		   User dbUser = new User();
-		   dbUser.setOpenId(openId);
-		   QueryWrapper<User> wrapper = new QueryWrapper<>(dbUser);
-		   List<User> list = userMapper.selectList(wrapper); 
 		  
-		   if(list == null || list.isEmpty()){
-			   //如果无openId信息,则跳转绑定页面
-			   response.sendRedirect(responseRegisterUrl);
+		   User user = userMapper.selectByOpenId(openId); 		  
+		   if(user == null){
+			   //如果没注册,则跳转注册页面
+			   response.sendRedirect(responseRegisterUrl + "?openId=" + openId);
 		   }else{
 			   //否则直接跳转首页
 			   response.sendRedirect(responseLoginUrl);
