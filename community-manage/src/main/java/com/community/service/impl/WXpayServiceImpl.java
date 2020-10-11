@@ -14,9 +14,10 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import com.community.entity.Wxpay;
 import com.community.exception.CustomException;
 import com.community.service.WXpayService;
 import com.community.util.IdMaker;
@@ -24,23 +25,8 @@ import com.github.wxpay.sdk.WXPayUtil;
 
 @Service
 public class WXpayServiceImpl implements WXpayService{
-	@Value("${appid}")
-	private String APPID;
-	
-	@Value("${mch_id}")
-	private String MCHID;
-	
-	@Value("${notify_url}")
-	private String NOTIFYURL;
-	
-	@Value("${type}")
-	private String TYPE;
-	
-	@Value("${key}")
-	private String KEY;
-	
-	@Value("${wxpay_url}")
-	private String WXPAYURL;
+	@Autowired
+	private Wxpay wxpay;
 
 	@Override
 	public Map<String,String> wxpay(BigDecimal totalFee,String openId) {	
@@ -60,11 +46,11 @@ public class WXpayServiceImpl implements WXpayService{
 			//生成随机字符串
 			String nonceStr = WXPayUtil.generateNonceStr();						
 			
-			requestDataMap.put("appid", APPID); //公众号id
+			requestDataMap.put("appid", wxpay.getAppId()); //公众号id
 			requestDataMap.put("body", "payMoney"); //商品描述				
-			requestDataMap.put("mch_id", MCHID); //商户号					
+			requestDataMap.put("mch_id", wxpay.getMchId()); //商户号					
 			requestDataMap.put("nonce_str", nonceStr); //随机字符串
-			requestDataMap.put("notify_url", NOTIFYURL); //异步接受回调用地址，url必须为外网可访问路径
+			requestDataMap.put("notify_url", wxpay.getNotifyUrl()); //异步接受回调用地址，url必须为外网可访问路径
 			requestDataMap.put("openid", openId);
 			requestDataMap.put("out_trade_no", IdMaker.get()); //商户订单号
 			requestDataMap.put("spbill_create_ip", hostAddress); //Native 支付填调用微信支付API的机器IP
@@ -74,14 +60,14 @@ public class WXpayServiceImpl implements WXpayService{
 			
 				
 			//签名
-			String signinValue = WXPayUtil.generateSignature(requestDataMap, KEY);
+			String signinValue = WXPayUtil.generateSignature(requestDataMap, wxpay.getKey());
 			
 			requestDataMap.put("sign", signinValue); //签名			
 			//requestDataMap.put("time_stamp", ""+new Date().getTime());
 			System.out.println("===========" + requestDataMap);
 			//设置参数 xml 格式
 			String requestDataXml = WXPayUtil.mapToXml(requestDataMap);
-			String responseDataXml = this.doPostByXml(WXPAYURL, requestDataXml);
+			String responseDataXml = this.doPostByXml(wxpay.getWxpayUrl(), requestDataXml);
 			System.out.println("===========" + responseDataXml);
 			//将xml转换为map集合
 			responseDataMap = WXPayUtil.xmlToMap(responseDataXml);		
@@ -102,7 +88,7 @@ public class WXpayServiceImpl implements WXpayService{
 			prepay_id = responseDataMap.get("prepay_id");		 
 			Map<String, String> payMap = new HashMap<String, String>();
 			 
-			payMap.put("appId", APPID);
+			payMap.put("appId", wxpay.getAppId());
 			 
 			payMap.put("timeStamp", new Date().getTime()+"");
 			 
@@ -112,7 +98,7 @@ public class WXpayServiceImpl implements WXpayService{
 			 
 			payMap.put("package", "prepay_id=" + prepay_id);
 			 
-			String paySign= WXPayUtil.generateSignature(payMap, KEY);
+			String paySign= WXPayUtil.generateSignature(payMap, wxpay.getKey());
 			payMap.put("paySign", paySign);
 			
 			return payMap;
@@ -120,16 +106,7 @@ public class WXpayServiceImpl implements WXpayService{
 			
 		} catch (Exception e) {			
 			throw new CustomException("微信支付参数解析错误");
-		}
-		
-	
-		
-			
-		 
-		
-		 
-		
-		
+		}		
 		//return responseDataMap;
 	}
 

@@ -10,7 +10,7 @@ import lombok.Data;
 
 @ApiModel("报修表")
 @Data
-public class repair implements Serializable{
+public class Repair implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@TableId
