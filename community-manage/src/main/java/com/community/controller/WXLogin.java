@@ -1,7 +1,6 @@
 package com.community.controller;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.net.URLEncoder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -67,35 +66,6 @@ public class WXLogin {
 		request.getSession().setAttribute("openId", openId);		
 		//request.getSession().setAttribute("access_token", access_token);
 		System.out.println("===用户openId===" + openId);
-	}	
-	
-
-//	   public static JSONObject doGetJson(String url) throws ClientProtocolException, IOException {
-//		   JSONObject jsonObject = null;
-//		   DefaultHttpClient client = new DefaultHttpClient();
-//		   HttpGet httpGet = new HttpGet(url);
-//		   HttpResponse response = client.execute(httpGet);
-//		   HttpEntity entity = response.getEntity();
-//		   if (entity != null) {
-//			   String result = EntityUtils.toString(entity, "UTF-8");
-//			   jsonObject = JSONObject.parseObject(result);
-//		   }
-//		   httpGet.releaseConnection();
-//		   return jsonObject;
-//	   }
-	   
-		@RequestMapping("/test/session")
-		protected void testSession(HttpServletRequest request)throws Exception {
-			request.getSession().setMaxInactiveInterval(-1);
-			
-			request.getSession().setAttribute("openId", "3140");
-		}
-		
-		@RequestMapping("/test/getsession")
-		protected void testGetSession(HttpServletRequest request, BigDecimal totalFee)throws Exception {
-			String openId = (String)request.getSession().getAttribute("openId");
-			System.out.println("===: " + openId + "===" + totalFee);
-			//request.getSession().invalidate();
-		}
+	}		   
 		
 }
