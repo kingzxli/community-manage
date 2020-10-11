@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import com.community.entity.Page;
 import com.community.entity.Result;
 import com.community.entity.User;
 import com.community.service.UserService;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -34,9 +36,10 @@ public class UserController {
 	
 	@ApiOperation(value = "列表查询")
 	@GetMapping("/user")
-	public Result<List<User>> list() {		
+	public Result<List<User>> list(Page page) {	
+		page.paging();			
 		List<User> list = userService.list();
-		return new Result<>(list);
+		return new Result<>(list).total(new PageInfo<User>(list).getTotal());
 	}
 	
 	@ApiOperation(value = "修改")

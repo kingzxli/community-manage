@@ -70,7 +70,7 @@ public class RoomServiceImpl implements RoomService{
 	}
 
 	@Override
-	public String insertByName(String unitId, String roomName,BigDecimal area,Integer type) {
+	public void insertByName(String unitId, String roomName,BigDecimal area,Integer type,String userId) {
 		Room room = new Room();
 		room.setUnitId(unitId);
 		room.setRoom(roomName);
@@ -78,8 +78,9 @@ public class RoomServiceImpl implements RoomService{
 		List<Room> list = roomMapper.selectList(wrapper);
 				
 		room.setType(type);
-		if(list == null || list.isEmpty()) {
-			room.setArea(area);
+		room.setArea(area);
+		room.setUserId(userId);
+		if(list == null || list.isEmpty()) {			
 			room.setId(IdMaker.get());
 			room.setIsDelete(0);
 			room.setCreatedUser("system");
@@ -89,8 +90,7 @@ public class RoomServiceImpl implements RoomService{
 			room.setId(list.get(0).getId());			
 			roomMapper.updateById(room);			
 		}
-		
-		return room.getId();
+
 	}
 
 }

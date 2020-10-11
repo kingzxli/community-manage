@@ -72,11 +72,10 @@ public class UserServiceImpl implements UserService{
 		}							
 	}
 	
-	public void insertByPhone(String phone,String userName,String roomId) {
+	public String insertByPhone(String phone,String userName) {
 		User user = new User();
 		user.setPhone(phone);
 		user.setName(userName);
-		user.setRoomId(roomId);
 		
 		User dbUser = userMapper.selectByPhone(phone);		
 		
@@ -90,6 +89,8 @@ public class UserServiceImpl implements UserService{
 			user.setId(dbUser.getId());
 			userMapper.updateById(user);
 		}
+		
+		return user.getId();
 	}
 
 	@Override
@@ -116,10 +117,6 @@ public class UserServiceImpl implements UserService{
 				String typeVo= Poi.getStringValueFromCell(row.getCell(6));
 				String name = Poi.getStringValueFromCell(row.getCell(7));
 				String phone = Poi.getStringValueFromCell(row.getCell(8));
-				String name1 = Poi.getStringValueFromCell(row.getCell(9));
-				String phone1 = Poi.getStringValueFromCell(row.getCell(10));
-				String name2 = Poi.getStringValueFromCell(row.getCell(11));
-				String phone2 = Poi.getStringValueFromCell(row.getCell(12));
 				
 				//检查数据是否为空
 				if(StringUtils.isEmpty(communityName)) {
@@ -165,14 +162,8 @@ public class UserServiceImpl implements UserService{
 				String communityId = communityService.insertByName(communityName);
 				String buildId = buildService.insertByName(communityId,buildName);
 				String unitId = unitService.insertByName(buildId,unitName);
-				String roomId = roomService.insertByName(unitId,roomName,area,type);
-				this.insertByPhone(phone,name,roomId);
-				if(!StringUtils.isEmpty(name1) && !StringUtils.isEmpty(phone1)) {
-					this.insertByPhone(phone1,name1,roomId);
-				}
-				if(!StringUtils.isEmpty(name2) && !StringUtils.isEmpty(phone2)) {
-					this.insertByPhone(phone2,name2,roomId);
-				}
+				String userId = this.insertByPhone(phone,name);
+				roomService.insertByName(unitId,roomName,area,type,userId);
 				num++;	
 			} catch (Exception e) {
 				
