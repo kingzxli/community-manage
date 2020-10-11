@@ -1,32 +1,28 @@
 package com.community.controller;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.URLEncoder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 import com.alibaba.fastjson.JSONObject;
-import com.community.entity.User;
 import com.community.entity.Wxpay;
-import com.community.mapper.UserMapper;
+import com.community.util.Assert;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
 public class WXLogin {
-	
-	@Autowired
-	private UserMapper userMapper;	
+
 	@Autowired
 	private Wxpay wxpay;
+	@Autowired
+	private RestTemplate restTemplate;
 		
 	@ApiOperation(value = "获取openID")
 	@GetMapping("/login")
@@ -38,9 +34,7 @@ public class WXLogin {
 				"&response_type=code" +
 				"&scope=SCOPE" +
 				"&state=123#wechat_redirect";	      
-		//String url2 = url.replace("APPID",APPID).replace("REDIRECT_URI",redirectUri).replace("SCOPE","snsapi_userinfo");
 		String url2 = url.replace("APPID",wxpay.getAppId()).replace("REDIRECT_URI",redirectUri).replace("SCOPE","snsapi_base");
-		System.out.println("===获取code===" + url2);
 		response.sendRedirect(url2);
 	}
 	
@@ -52,7 +46,12 @@ public class WXLogin {
 		String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + wxpay.getAppId() + "&secret="
 				+ wxpay.getAppSecret() + "&code=" + code + "&grant_type=authorization_code";
 
-		JSONObject jsonObject = this.doGetJson(url);
+		//JSONObject jsonObject = this.doGetJson(url);
+		ResponseEntity<String> result = restTemplate.postForEntity(url, null, String.class);
+		Assert.notNull(result, "=============获取openId失败==========");
+		
+		JSONObject jsonObject = JSONObject.parseObject(result.getBody());
+		
 		//1.获取微信用户的openid
 		String openId = jsonObject.getString("openid");		
 
@@ -65,34 +64,38 @@ public class WXLogin {
 		//		   System.out.println("==用户信息===" + userInfo);
 
 		//至此拿到了微信用户的所有信息,剩下的就是业务逻辑处理部分了		  
-		request.getSession().setAttribute("openId", openId);
-		System.out.println("==获取用户openId===" + openId);
+		request.getSession().setAttribute("openId", openId);		
 		//request.getSession().setAttribute("access_token", access_token);
-		//去数据库查询此微信是否绑定过手机
-
-		//		   User user = userMapper.selectByOpenId(openId); 		  
-		//		   if(user == null){
-		//			   //如果没注册,则跳转注册页面
-		//			   response.sendRedirect(wxpay.getResponseRegisterUrl() + "?openId=" + openId);
-		//		   }else{
-		//			   //否则直接跳转首页
-		//			   response.sendRedirect(wxpay.getResponseLoginUrl());
-		//		   }
+		System.out.println("===用户openId===" + openId);
 	}	
 	
 
-	   public static JSONObject doGetJson(String url) throws ClientProtocolException, IOException {
-		   JSONObject jsonObject = null;
-		   DefaultHttpClient client = new DefaultHttpClient();
-		   HttpGet httpGet = new HttpGet(url);
-		   HttpResponse response = client.execute(httpGet);
-		   HttpEntity entity = response.getEntity();
-		   if (entity != null) {
-			   String result = EntityUtils.toString(entity, "UTF-8");
-			   jsonObject = JSONObject.parseObject(result);
-		   }
-		   httpGet.releaseConnection();
-		   return jsonObject;
-	   }
+//	   public static JSONObject doGetJson(String url) throws ClientProtocolException, IOException {
+//		   JSONObject jsonObject = null;
+//		   DefaultHttpClient client = new DefaultHttpClient();
+//		   HttpGet httpGet = new HttpGet(url);
+//		   HttpResponse response = client.execute(httpGet);
+//		   HttpEntity entity = response.getEntity();
+//		   if (entity != null) {
+//			   String result = EntityUtils.toString(entity, "UTF-8");
+//			   jsonObject = JSONObject.parseObject(result);
+//		   }
+//		   httpGet.releaseConnection();
+//		   return jsonObject;
+//	   }
+	   
+		@RequestMapping("/test/session")
+		protected void testSession(HttpServletRequest request)throws Exception {
+			request.getSession().setMaxInactiveInterval(-1);
+			
+			request.getSession().setAttribute("openId", "3140");
+		}
+		
+		@RequestMapping("/test/getsession")
+		protected void testGetSession(HttpServletRequest request, BigDecimal totalFee)throws Exception {
+			String openId = (String)request.getSession().getAttribute("openId");
+			System.out.println("===: " + openId + "===" + totalFee);
+			//request.getSession().invalidate();
+		}
 		
 }

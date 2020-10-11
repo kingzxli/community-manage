@@ -18,4 +18,5 @@ public class CommunityManageApplication {
 	public RestTemplate restTemplate() {
 		return new RestTemplate();
 	}
+	
 }

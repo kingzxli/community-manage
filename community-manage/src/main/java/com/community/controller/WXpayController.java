@@ -2,6 +2,7 @@ package com.community.controller;
 
 import java.math.BigDecimal;
 import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,8 +17,8 @@ public class WXpayController {
 	private WXpayService wxpayService;
 	
 	@GetMapping("/wxpay")
-	public Map<String,String> wxpay(BigDecimal totalFee,String openId) {
-				
+	public Map<String,String> wxpay(BigDecimal totalFee,HttpServletRequest request) {
+		String openId = (String)request.getSession().getAttribute("openId");		
 		return wxpayService.wxpay(totalFee,openId);
 		
 	}

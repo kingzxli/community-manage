@@ -63,8 +63,6 @@ public class WXpayServiceImpl implements WXpayService{
 			String signinValue = WXPayUtil.generateSignature(requestDataMap, wxpay.getKey());
 			
 			requestDataMap.put("sign", signinValue); //签名			
-			//requestDataMap.put("time_stamp", ""+new Date().getTime());
-			System.out.println("===========" + requestDataMap);
 			//设置参数 xml 格式
 			String requestDataXml = WXPayUtil.mapToXml(requestDataMap);
 			String responseDataXml = this.doPostByXml(wxpay.getWxpayUrl(), requestDataXml);
@@ -75,7 +73,6 @@ public class WXpayServiceImpl implements WXpayService{
 			//判断支付结果	
 			Assert.isTrue(responseDataMap != null && "SUCCESS".equals(responseDataMap.get("return_code")), "支付通讯失败");		
 			Assert.isTrue("SUCCESS".equals(responseDataMap.get("result_code")), "支付失败");
-			System.out.println("返回参数");
 			System.out.println(responseDataMap);
 
 			
@@ -107,7 +104,6 @@ public class WXpayServiceImpl implements WXpayService{
 		} catch (Exception e) {			
 			throw new CustomException("微信支付参数解析错误");
 		}		
-		//return responseDataMap;
 	}
 
 	/**
