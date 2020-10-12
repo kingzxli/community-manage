@@ -6,6 +6,7 @@ import java.net.InetAddress;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -15,8 +16,11 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.web.client.RestTemplate;
+import com.alibaba.fastjson.JSONObject;
 import com.community.entity.Wxpay;
 import com.community.exception.CustomException;
 import com.community.service.WXpayService;
@@ -27,12 +31,20 @@ import com.github.wxpay.sdk.WXPayUtil;
 public class WXpayServiceImpl implements WXpayService{
 	@Autowired
 	private Wxpay wxpay;
+	@Autowired
+	private RestTemplate restTemplate;
 
 	@Override
-	public Map<String,String> wxpay(BigDecimal totalFee,String openId) {	
-		//将金额(元)转换为分
-		Assert.notNull(totalFee, "金额不能为空");
+	public Map<String,String> wxpay(BigDecimal totalFee,String code) {	
 		
+		Assert.notNull(totalFee, "金额不能为空");
+		Assert.isTrue(StringUtils.isNotEmpty(code), "code不能为空");
+		
+		String openId = this.getOpenId(code);	
+		Assert.isTrue(StringUtils.isNotEmpty(openId), "openId获取失败");
+		System.out.println("===openId===" + openId);
+		
+		//将金额(元)转换为分
 		BigDecimal amount = totalFee.multiply(new BigDecimal(100));
 		Integer amountInt = amount.intValue();
 		
@@ -147,5 +159,15 @@ public class WXpayServiceImpl implements WXpayService{
 		
 	}
 	
-	
+
+	private String getOpenId(String code){		 
+		String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + wxpay.getAppId() + "&secret="
+				+ wxpay.getAppSecret() + "&code=" + code + "&grant_type=authorization_code";
+
+		ResponseEntity<String> result = restTemplate.postForEntity(url, null, String.class);		
+		JSONObject jsonObject = JSONObject.parseObject(result.getBody());
+		
+		//1.获取微信用户的openid
+		return jsonObject.getString("openid");			
+	}		   
 }
