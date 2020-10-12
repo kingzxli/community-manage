@@ -84,13 +84,8 @@
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper-spring-boot-starter</artifactId>
             <version>1.2.12</version>
-        </dependency>
+        </dependency>  
         
-		<dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>      
-		
 		<!-- 日志 -->
         <dependency>
             <groupId>org.slf4j</groupId>

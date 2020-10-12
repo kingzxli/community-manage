@@ -99,20 +99,13 @@ public class WXpayController {
 			/**
 			 * 参数返回前端
 			 */
-			String prepay_id = "";//预支付id
-			 
 			//支付通讯成功
-			prepay_id = responseDataMap.get("prepay_id");		 
-			Map<String, String> payMap = new HashMap<String, String>();
-			 
-			payMap.put("appId", wxpay.getAppId());
-			 
-			payMap.put("timeStamp", new Date().getTime()+"");
-			 
-			payMap.put("nonceStr", WXPayUtil.generateNonceStr());
-			 
-			payMap.put("signType", "MD5");
-			 
+			String prepay_id = responseDataMap.get("prepay_id");		 
+			Map<String, String> payMap = new HashMap<String, String>();			 
+			payMap.put("appId", wxpay.getAppId());		 
+			payMap.put("timeStamp", new Date().getTime()+"");		 
+			payMap.put("nonceStr", WXPayUtil.generateNonceStr());			 
+			payMap.put("signType", "MD5");			 
 			payMap.put("package", "prepay_id=" + prepay_id);
 			 
 			String paySign= WXPayUtil.generateSignature(payMap, wxpay.getKey());
@@ -171,7 +164,7 @@ public class WXpayController {
 	 */
 	private String getOpenId(String code){
 		//获取回调地址中的code
-		System.out.println("===开始获取code===" + code);
+		System.out.println("===开始获取openId===");
 
 		String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + wxpay.getAppId() + "&secret="
 				+ wxpay.getAppSecret() + "&code=" + code + "&grant_type=authorization_code";
@@ -181,7 +174,7 @@ public class WXpayController {
 		
 		JSONObject jsonObject = JSONObject.parseObject(result.getBody());				
 		String openId = jsonObject.getString("openid");		
-		System.out.println("===获取openId===" + openId);
+		System.out.println("===openId===" + openId);
 		return openId;	  
 	}		   
 
