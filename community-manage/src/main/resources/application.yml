@@ -1,5 +1,5 @@
 server:
-  port: 80
+  port: 8081
 
 ## mysql
 spring:
@@ -21,7 +21,10 @@ mybatis-plus:
     db-config:     
       logic-delete-value: 1
       logic-not-delete-value: 0
-      
+
+
+
+        
 # 微信支付参数
 wxpay:
   appId: wx23db2e5b441b70fc

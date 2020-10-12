@@ -6,8 +6,6 @@ import java.net.InetAddress;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -17,11 +15,14 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.Assert;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
+import com.alibaba.fastjson.JSONObject;
 import com.community.entity.Wxpay;
 import com.community.exception.CustomException;
+import com.community.util.Asserter;
 import com.community.util.IdMaker;
 import com.github.wxpay.sdk.WXPayUtil;
 import io.swagger.annotations.Api;
@@ -32,14 +33,21 @@ public class WXpayController {
 	
 	@Autowired
 	private Wxpay wxpay;
+	@Autowired
+	private RestTemplate restTemplate;
 	
 	@GetMapping("/wxpay")
-	public Map<String,String> wxpay(HttpServletRequest request,BigDecimal totalFee) throws IOException {	
-		Assert.notNull(totalFee, "金额不能为空");	
-		String openId = (String)request.getSession().getAttribute("openId");
-		Assert.isTrue(StringUtils.isNotEmpty(openId), "微信支付openId获取失败");					
-		System.out.println("===openId===" + openId);
-		
+	public Map<String,String> wxpay(String code,BigDecimal totalFee) throws IOException {	
+		Asserter.notEmpty(code, "code不能为空");
+		Asserter.notNull(totalFee, "金额不能为空");	
+		/**
+		 * 获取openId
+		 */
+		String openId = this.getOpenId(code);
+		Asserter.notEmpty(openId, "微信支付openId获取失败");					
+		/**
+		 * 微信支付统一下单
+		 */
 		Map<String,String> map = this.wxpayRequest(totalFee,openId);
 		return map;
 		
@@ -84,8 +92,8 @@ public class WXpayController {
 			responseDataMap = WXPayUtil.xmlToMap(responseDataXml);		
 			
 			//判断支付结果	
-			Assert.isTrue(responseDataMap != null && "SUCCESS".equals(responseDataMap.get("return_code")), "支付通讯失败");		
-			Assert.isTrue("SUCCESS".equals(responseDataMap.get("result_code")), "支付失败");
+			Asserter.isTrue(responseDataMap != null && "SUCCESS".equals(responseDataMap.get("return_code")), "支付通讯失败");		
+			Asserter.isTrue("SUCCESS".equals(responseDataMap.get("result_code")), "支付失败");
 			System.out.println(responseDataMap);
 			
 			/**
@@ -154,5 +162,27 @@ public class WXpayController {
 		}		
 		return result;		
 	}
+	
+	/**
+	 * 获取openId
+	 * @param request
+	 * @param response
+	 * @throws Exception
+	 */
+	private String getOpenId(String code){
+		//获取回调地址中的code
+		System.out.println("===开始获取code===" + code);
+
+		String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + wxpay.getAppId() + "&secret="
+				+ wxpay.getAppSecret() + "&code=" + code + "&grant_type=authorization_code";
+	
+		ResponseEntity<String> result = restTemplate.postForEntity(url, null, String.class);
+		Asserter.notNull(result, "=============获取openId失败==========");
+		
+		JSONObject jsonObject = JSONObject.parseObject(result.getBody());				
+		String openId = jsonObject.getString("openid");		
+		System.out.println("===获取openId===" + openId);
+		return openId;	  
+	}		   
 
 }
