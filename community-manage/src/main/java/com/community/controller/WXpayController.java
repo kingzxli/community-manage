@@ -20,12 +20,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import com.alibaba.fastjson.JSONObject;
+import com.community.entity.Result;
 import com.community.entity.Wxpay;
 import com.community.exception.CustomException;
 import com.community.util.Asserter;
 import com.community.util.IdMaker;
 import com.github.wxpay.sdk.WXPayUtil;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 @Api(tags = "微信支付")
 @RestController
@@ -36,21 +38,14 @@ public class WXpayController {
 	@Autowired
 	private RestTemplate restTemplate;
 	
+	@ApiOperation(value = "微信支付")
 	@GetMapping("/wxpay")
-	public Map<String,String> wxpay(String code,BigDecimal totalFee) throws IOException {	
-		Asserter.notEmpty(code, "code不能为空");
+	public Result<Map<String,String>> wxpay(String openId,BigDecimal totalFee) throws IOException {	
+		Asserter.notEmpty(openId, "openId不能为空");
 		Asserter.notNull(totalFee, "金额不能为空");	
-		/**
-		 * 获取openId
-		 */
-		String openId = this.getOpenId(code);
-		Asserter.notEmpty(openId, "微信支付openId获取失败");					
-		/**
-		 * 微信支付统一下单
-		 */
+			
 		Map<String,String> map = this.wxpayRequest(totalFee,openId);
-		return map;
-		
+		return new Result<>(map);	
 	}
 	
 	
@@ -162,7 +157,9 @@ public class WXpayController {
 	 * @param response
 	 * @throws Exception
 	 */
-	private String getOpenId(String code){
+	@ApiOperation(value = "获取openId")
+	@GetMapping("/getOpenId")
+	public Result<String> getOpenId(String code){
 		//获取回调地址中的code
 		System.out.println("===开始获取openId===");
 
@@ -175,7 +172,8 @@ public class WXpayController {
 		JSONObject jsonObject = JSONObject.parseObject(result.getBody());				
 		String openId = jsonObject.getString("openid");		
 		System.out.println("===openId===" + openId);
-		return openId;	  
+		Asserter.notEmpty(openId, "获取openId失败");
+		return new Result<>(openId);	  
 	}		   
 
 }

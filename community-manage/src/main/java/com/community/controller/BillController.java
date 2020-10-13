@@ -15,6 +15,7 @@ import com.community.entity.Page;
 import com.community.entity.Result;
 import com.community.entity.vo.BillVo;
 import com.community.service.BillService;
+import com.community.util.IdMaker;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -57,7 +58,7 @@ public class BillController {
 	@ApiOperation(value = "新增")
 	@PostMapping("/bill")
 	public Result<?> insert(@RequestBody Bill bill) {
-		
+		bill.setId(IdMaker.get());
 		bill.setIsDelete(0);
 		bill.setCreatedTime(new Date());
 		

@@ -14,6 +14,7 @@ import com.community.entity.Page;
 import com.community.entity.Repair;
 import com.community.entity.Result;
 import com.community.service.RepairService;
+import com.community.util.SendSms;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -60,6 +61,14 @@ public class RepairController {
 		repair.setIsDelete(0);
 		repair.setCreatedTime(new Date());
 		repairService.insert(repair);
+		return Result.SUCCESS;
+	}
+	
+	@ApiOperation(value = "新增")
+	@GetMapping("/sms")
+	public Result<?> insert(String phoneNumber,String code) {
+		
+		SendSms.sendSms(phoneNumber, code, "");
 		return Result.SUCCESS;
 	}
 
