@@ -20,10 +20,10 @@ public class Room implements Serializable{
 	private String id;
 	
 	@ApiModelProperty(value = "房间名称")
-	private String room;
+	private String roomName;
 	
-	@ApiModelProperty(value = "单元Id")
-	private String unitId;
+	@ApiModelProperty(value = "楼盘Id")
+	private String communityId;
 	
 	@ApiModelProperty(value = "面积(m2)")
 	private BigDecimal area;

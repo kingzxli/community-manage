@@ -12,10 +12,8 @@ import org.springframework.util.Assert;
 import org.springframework.web.multipart.MultipartFile;
 import com.community.entity.User;
 import com.community.mapper.UserMapper;
-import com.community.service.BuildService;
 import com.community.service.CommunityService;
 import com.community.service.RoomService;
-import com.community.service.UnitService;
 import com.community.service.UserService;
 import com.community.util.DataUtils;
 import com.community.util.IdMaker;
@@ -28,10 +26,6 @@ public class UserServiceImpl implements UserService{
 	private UserMapper userMapper;
 	@Autowired
 	private CommunityService communityService;
-	@Autowired
-	private BuildService buildService;
-	@Autowired
-	private UnitService unitService;
 	@Autowired
 	private RoomService roomService;
 
@@ -108,13 +102,13 @@ public class UserServiceImpl implements UserService{
 				if (row == null) {
 					continue;
 				}	
-				//excel 格式 0:序号，1:楼盘名称，2:楼栋名称，3:单元，4:房号，5:面积，6:房间类型，7:姓名，8:电话
+				//excel 格式 0:序号，1:楼盘名称，2:房间类型，3:楼栋名称,4:单元，5:房号，6:面积，7:姓名，8:电话
 				String communityName = Poi.getStringValueFromCell(row.getCell(1));
-				String buildName = Poi.getStringValueFromCell(row.getCell(2));
-				String unitName = Poi.getStringValueFromCell(row.getCell(3));
-				String roomName = Poi.getStringValueFromCell(row.getCell(4));
-				String areaVo = Poi.getStringValueFromCell(row.getCell(5));
-				String typeVo= Poi.getStringValueFromCell(row.getCell(6));
+				String typeVo= Poi.getStringValueFromCell(row.getCell(2));
+				String buildName = Poi.getStringValueFromCell(row.getCell(3));
+				String unitName = Poi.getStringValueFromCell(row.getCell(4));
+				String roomName = Poi.getStringValueFromCell(row.getCell(5));
+				String areaVo = Poi.getStringValueFromCell(row.getCell(6));				
 				String name = Poi.getStringValueFromCell(row.getCell(7));
 				String phone = Poi.getStringValueFromCell(row.getCell(8));
 				
@@ -122,23 +116,7 @@ public class UserServiceImpl implements UserService{
 				if(StringUtils.isEmpty(communityName)) {
 					error.append("第" + i + "行,楼盘不能为空");
 				}
-				if(StringUtils.isEmpty(buildName)) {
-					error.append("第" + i + "行,楼栋不能为空");
-				}
-				if(StringUtils.isEmpty(unitName)) {
-					error.append("第" + i + "行,单元不能为空");
-				}
-				if(StringUtils.isEmpty(roomName)) {
-					error.append("第" + i + "行,房号不能为空");
-				}
-				BigDecimal area = new BigDecimal(0);
-				if(StringUtils.isEmpty(areaVo)) {
-					error.append("第" + i + "行,面积不能为空");
-				}if(!DataUtils.isIntegerAndDecimal(areaVo)) {
-					error.append("第" + i + "行,面积请填写数字");
-				}else {
-					area = new BigDecimal(areaVo);
-				}
+				
 				Integer type = null;
 				if(StringUtils.isEmpty(typeVo)) {
 					error.append("第" + i + "行,房间类型不能为空");
@@ -151,6 +129,32 @@ public class UserServiceImpl implements UserService{
 				}else {
 					error.append("第" + i + "行,房间类型填写错误");
 				}
+				
+				if(type != null && type < 3) {
+					if(StringUtils.isEmpty(buildName)) {
+						error.append("第" + i + "行,楼栋不能为空");
+					}
+				}
+				
+				if(type != null && type == 1) {
+					if(StringUtils.isEmpty(unitName)) {
+						error.append("第" + i + "行,单元不能为空");
+					}
+				}
+
+				if(StringUtils.isEmpty(roomName)) {
+					error.append("第" + i + "行,房号不能为空");
+				}
+				
+				BigDecimal area = new BigDecimal(0);
+				if(StringUtils.isEmpty(areaVo)) {
+					error.append("第" + i + "行,面积不能为空");
+				}if(!DataUtils.isIntegerAndDecimal(areaVo)) {
+					error.append("第" + i + "行,面积请填写数字");
+				}else {
+					area = new BigDecimal(areaVo);
+				}
+				
 				if(StringUtils.isEmpty(name)) {
 					error.append("第" + i + "行,姓名不能为空");
 				}
@@ -158,12 +162,19 @@ public class UserServiceImpl implements UserService{
 					error.append("第" + i + "行,电话不能为空");
 				}							
 				
-				//根据名称查询数据是否存在，不存在则新增
-				String communityId = communityService.insertByName(communityName);
-				String buildId = buildService.insertByName(communityId,buildName);
-				String unitId = unitService.insertByName(buildId,unitName);
+				//根据名称查询数据是否存在，不存在则新增 (1:楼盘2:楼栋3:单元)				  
+				String communityId = communityService.insertByName(communityName,1,null);
+				//新增楼栋信息
+				if(type != null && type < 3) {
+					communityId = communityService.insertByName(buildName,2,communityId);
+				}
+				//新增单元信息
+				if(type != null && type == 1) {
+					communityId = communityService.insertByName(unitName,3,communityId);
+				}
+				//新增用户信息
 				String userId = this.insertByPhone(phone,name);
-				roomService.insertByName(unitId,roomName,area,type,userId);
+				roomService.insertByName(communityId,roomName,area,type,userId);
 				num++;	
 			} catch (Exception e) {
 				

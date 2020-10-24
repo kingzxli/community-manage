@@ -22,8 +22,11 @@ public class Community implements Serializable{
 	@ApiModelProperty(value = "楼盘名称")
 	private String communityName;
 	
-	@ApiModelProperty(value = "楼盘地址")
-	private String communityAddress;
+	@ApiModelProperty(value = "上级id")
+	private String parentId;
+	
+	@ApiModelProperty(value = "级别(1:楼盘2:楼栋3:单元)")
+	private Integer communityLevel;
 	
 	@ApiModelProperty(value = "是否删除(1:是，0:否)")
 	@TableLogic

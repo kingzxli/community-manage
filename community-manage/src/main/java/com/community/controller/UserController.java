@@ -27,19 +27,19 @@ public class UserController {
 	
 	@Autowired
 	private UserService userService;
-	
-	@ApiOperation(value = "单记录查询")
-	@GetMapping("/user/{userId}")
-	public Result<User> getUserById(@PathVariable(name="userId") String userId) {				
-		return new Result<>(userService.getById(userId));
-	}
-	
+
 	@ApiOperation(value = "列表查询")
 	@GetMapping("/user")
 	public Result<List<User>> list(Page page) {	
 		page.paging();			
 		List<User> list = userService.list();
 		return new Result<>(list).total(new PageInfo<User>(list).getTotal());
+	}
+	
+	@ApiOperation(value = "单记录查询")
+	@GetMapping("/user/{userId}")
+	public Result<User> getUserById(@PathVariable(name="userId") String userId) {				
+		return new Result<>(userService.getById(userId));
 	}
 	
 	@ApiOperation(value = "修改")

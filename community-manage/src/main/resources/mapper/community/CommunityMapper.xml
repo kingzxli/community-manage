@@ -10,10 +10,14 @@
 			community 
 		WHERE
 			is_delete = 0
+			AND community_level = #{communityLevel}
 		<if test="communityName != null and communityName != '' ">			
 			AND community_name like concat('%',#{communityName},'%')
 		</if>
-		ORDER BY created_time DESC		
+		<if test="parentId != null and parentId != '' ">			
+			AND parent_id = #{parentId}
+		</if>
+		ORDER BY community_name * 1		
 	</select>
 
 </mapper>

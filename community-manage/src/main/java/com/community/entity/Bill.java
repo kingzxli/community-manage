@@ -23,23 +23,11 @@ public class Bill implements Serializable{
 	@ApiModelProperty(value = "房间Id")
 	private String roomId;
 	
-	@ApiModelProperty(value = "年份")
-	private String billYear;
-	
-	@ApiModelProperty(value = "账单金额")
-	private BigDecimal billAmount;
-	
 	@ApiModelProperty(value = "缴纳金额")
 	private BigDecimal payAmount;
 	
-	@ApiModelProperty(value = "缴费状态(1:已缴,2:未缴)")
-	private Integer payStatus;
-	
 	@ApiModelProperty(value = "备注")
 	private String remark;
-	
-	@ApiModelProperty(value = "缴费人微信Id")
-	private String payWxId;
 	
 	@ApiModelProperty(value = "缴费人电话")
 	private String payPhone;

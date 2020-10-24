@@ -16,6 +16,6 @@ public interface CommunityService {
 
 	void insert(Community community);
 	
-	String insertByName(String communityName);
+	String insertByName(String communityName,Integer communityLevel,String parentId);
 
 }

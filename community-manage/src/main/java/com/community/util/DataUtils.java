@@ -10,7 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 
 public class DataUtils {
 	private static final String INTEGER_REX = "^[-\\+]?[\\d]*$";
-	private static final String INTEGER_DECIMAL_REX = "^[0-9]+(.[0-9]{1,2})?$";
+	private static final String INTEGER_DECIMAL_REX = "^[0-9]+(.[0-9]{1,3})?$";
 	private static String REGEX = "^(\\-{0,1})\\d{1,11}(\\.\\d{1,4})?$";
     private static Pattern PATTERN = Pattern.compile(REGEX);
 	

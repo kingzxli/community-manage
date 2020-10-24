@@ -1,6 +1,8 @@
 package com.community.entity.vo;
 
 import java.math.BigDecimal;
+import java.util.Date;
+
 import com.community.entity.Bill;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -27,7 +29,7 @@ public class BillVo extends Bill{
 	private String unit;
 	
 	@ApiModelProperty(value = "房间名称")
-	private String room;
+	private String roomName;
 	
 	@ApiModelProperty(value = "面积(m2)")
 	private BigDecimal area;
@@ -43,5 +45,11 @@ public class BillVo extends Bill{
 	
 	@ApiModelProperty(value = "单元Id")
 	private String unitId;
+	
+	@ApiModelProperty(value = "开始日期")
+	private Date startDate;
+	
+	@ApiModelProperty(value = "结束日期")
+	private Date endDate;
 	
 }

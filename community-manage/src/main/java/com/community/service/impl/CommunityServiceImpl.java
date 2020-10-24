@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.community.entity.Community;
 import com.community.mapper.CommunityMapper;
@@ -22,7 +23,8 @@ public class CommunityServiceImpl implements CommunityService{
 	}
 
 	@Override
-	public List<Community> list(Community community) {		
+	public List<Community> list(Community community) {	
+		Assert.notNull(community.getCommunityLevel(), "级别不能为空");
 		return communityMapper.list(community);
 	}
 
@@ -43,9 +45,11 @@ public class CommunityServiceImpl implements CommunityService{
 	}
 	
 	@Override
-	public String insertByName(String communityName) {
+	public String insertByName(String communityName,Integer communityLevel,String parentId) {
 		Community community = new Community();
 		community.setCommunityName(communityName);
+		community.setCommunityLevel(communityLevel);
+		community.setParentId(parentId);
 		QueryWrapper<Community> wrapper = new QueryWrapper<>(community);
 		List<Community> list = communityMapper.selectList(wrapper);
 				

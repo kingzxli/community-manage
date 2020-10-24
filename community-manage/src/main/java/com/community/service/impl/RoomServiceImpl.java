@@ -35,6 +35,10 @@ public class RoomServiceImpl implements RoomService{
 		 * 车位费 360/年
 		 */
 		for(RoomVo dbRoom : list) {
+			if("13333333333".equals(dbRoom.getPhone()) || "18888888888".equals(dbRoom.getPhone())) {
+				dbRoom.setBillAmount(new BigDecimal("0.01"));
+				continue;
+			}
 			BigDecimal billAmount = new BigDecimal(0);
 			//1:住宅,2:商铺,3:车库
 			Integer type = dbRoom.getType();
@@ -70,14 +74,14 @@ public class RoomServiceImpl implements RoomService{
 	}
 
 	@Override
-	public void insertByName(String unitId, String roomName,BigDecimal area,Integer type,String userId) {
+	public void insertByName(String communityId, String roomName,BigDecimal area,Integer type,String userId) {
 		Room room = new Room();
-		room.setUnitId(unitId);
-		room.setRoom(roomName);
+		room.setCommunityId(communityId);
+		room.setRoomName(roomName);
+		room.setType(type);
 		QueryWrapper<Room> wrapper = new QueryWrapper<>(room);
 		List<Room> list = roomMapper.selectList(wrapper);
 				
-		room.setType(type);
 		room.setArea(area);
 		room.setUserId(userId);
 		if(list == null || list.isEmpty()) {			
