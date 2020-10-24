@@ -17,9 +17,9 @@ public class Repair implements Serializable{
 	@ApiModelProperty(value = "Id")
 	private String id;
 	
-	@ApiModelProperty(value = "报修内容")
+	@ApiModelProperty(value = "报修内容1")
 	private String content;
-	
+	 
 	@ApiModelProperty(value = "房间Id")
 	private String roomId;
 	
@@ -43,3 +43,4 @@ public class Repair implements Serializable{
 	private Date modifiedTime;
 	
 }
+
