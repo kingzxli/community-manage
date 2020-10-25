@@ -3,21 +3,19 @@
 //import org.junit.jupiter.api.Test;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.boot.test.context.SpringBootTest;
-//
-//import com.community.controller.UserController;
-//import com.community.entity.Result;
-//import com.community.entity.User;
+//import com.community.util.OssUtil;
 //
 //@SpringBootTest
 //class CommunityManageApplicationTests {
 //
 //	@Autowired
-//	UserController userController;
+//	OssUtil ossUtil;
 //	
 //	@Test
 //	void contextLoads() {
-//		Result<User> user = userController.getUserById("1");
-//		System.out.println(user);
+//		
+//		System.out.println("测试");
+//		ossUtil.createbucket();
 //	}
 //
 //}
