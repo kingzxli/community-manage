@@ -20,9 +20,9 @@ public class WXLogin {
 
 	@Autowired
 	private Wxpay wxpay;
-	@Autowired
-	private RestTemplate restTemplate;
-		
+//	@Autowired
+//	private RestTemplate restTemplate;
+//		
 	@ApiOperation(value = "获取code测试")
 	@GetMapping("/login")
 	public void wxLogin(HttpServletResponse response) throws IOException{
@@ -37,40 +37,40 @@ public class WXLogin {
 		System.out.println("跳转回调接口");
 		response.sendRedirect(url2);
 	}
-	
-
-	@RequestMapping("/callBack")
-	protected void deGet(HttpServletRequest request, HttpServletResponse response)throws Exception {
-		System.out.println("===进入回调接口===");
-
-		//获取回调地址中的code
-		String code = request.getParameter("code");	
-		System.out.println("===回调接口code===" + code);
-
-		String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + wxpay.getAppId() + "&secret="
-				+ wxpay.getAppSecret() + "&code=" + code + "&grant_type=authorization_code";
-	
-		ResponseEntity<String> result = restTemplate.postForEntity(url, null, String.class);
-		Asserter.notNull(result, "=============获取openId失败==========");
-		
-		JSONObject jsonObject = JSONObject.parseObject(result.getBody());
-		
-		//1.获取微信用户的openid
-		String openId = jsonObject.getString("openid");		
-
-		//2.获取获取access_token
-		//		   String access_token = jsonObject.getString("access_token");
-		//		   String infoUrl = "https://api.weixin.qq.com/sns/userinfo?access_token=" + access_token + "&openid=" + openId
-		//				   + "&lang=zh_CN";
-		//		   //3.获取微信用户信息
-		//		   JSONObject userInfo = this.doGetJson(infoUrl);
-		//		   System.out.println("==用户信息===" + userInfo);
-		//request.getSession().setAttribute("access_token", access_token);
-		
-		//至此拿到了微信用户的所有信息,剩下的就是业务逻辑处理部分了		  
-		request.getSession().setAttribute("openId", openId);				
-		System.out.println("===回调接口openId===" + openId);
-	}	
+//	
+//
+//	@RequestMapping("/callBack")
+//	protected void deGet(HttpServletRequest request, HttpServletResponse response)throws Exception {
+//		System.out.println("===进入回调接口===");
+//
+//		//获取回调地址中的code
+//		String code = request.getParameter("code");	
+//		System.out.println("===回调接口code===" + code);
+//
+//		String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + wxpay.getAppId() + "&secret="
+//				+ wxpay.getAppSecret() + "&code=" + code + "&grant_type=authorization_code";
+//	
+//		ResponseEntity<String> result = restTemplate.postForEntity(url, null, String.class);
+//		Asserter.notNull(result, "=============获取openId失败==========");
+//		
+//		JSONObject jsonObject = JSONObject.parseObject(result.getBody());
+//		
+//		//1.获取微信用户的openid
+//		String openId = jsonObject.getString("openid");		
+//
+//		//2.获取获取access_token
+//		//		   String access_token = jsonObject.getString("access_token");
+//		//		   String infoUrl = "https://api.weixin.qq.com/sns/userinfo?access_token=" + access_token + "&openid=" + openId
+//		//				   + "&lang=zh_CN";
+//		//		   //3.获取微信用户信息
+//		//		   JSONObject userInfo = this.doGetJson(infoUrl);
+//		//		   System.out.println("==用户信息===" + userInfo);
+//		//request.getSession().setAttribute("access_token", access_token);
+//		
+//		//至此拿到了微信用户的所有信息,剩下的就是业务逻辑处理部分了		  
+//		request.getSession().setAttribute("openId", openId);				
+//		System.out.println("===回调接口openId===" + openId);
+//	}	
 	
 	@GetMapping("/successPage")
 	protected void deGet()throws Exception {
