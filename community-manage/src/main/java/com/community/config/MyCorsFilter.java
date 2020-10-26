@@ -1,5 +1,6 @@
 package com.community.config;
 
+import org.apache.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -24,11 +25,17 @@ public class MyCorsFilter implements Filter {
       //允许跨域携带Cookie
       response.setHeader("Access-Control-Allow-Credentials", "true");
       //允许的访问方法
-      response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+      response.setHeader("Access-Control-Allow-Methods", "*");
       //Access-Control-Max-Age 用于 CORS 相关配置的缓存
       response.setHeader("Access-Control-Max-Age", "3600");
-      response.setHeader("Access-Control-Allow-Headers", "x-requested-with");
-
+      response.setHeader("Access-Control-Allow-Headers", "Content-Type,XFILENAME,XFILECATEGORY,XFILESIZE");
+      if (request.getMethod().equals("OPTIONS")) {    	  
+    	  response.setStatus(HttpStatus.SC_OK);
+			// hresp.setContentLength(0);
+    	  response.getWriter().write("OPTIONS returns OK");
+          return;
+      }
+      
       filterChain.doFilter(servletRequest,servletResponse);
   }
 
