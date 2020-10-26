@@ -9,7 +9,7 @@ spring:
     password: pwkingzxli1991
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
-    
+  ## 跨域请求
   mvc:
     dispatch-options-request: true
     
@@ -32,7 +32,7 @@ mybatis-plus:
 wxpay:
   appId: wx23db2e5b441b70fc
   mchId: 1601076593
-  notifyUrl: http://changshengwuye.cn:8081/successPage
+  notifyUrl: http://changshengwuye.cn/successPage
   key: changshengwuye202009081737qwaszx
   wxpayUrl: https://api.mch.weixin.qq.com/pay/unifiedorder
   appSecret: a020abed743a29c5e89eefe033d5249b
