@@ -72,7 +72,7 @@ public class WXLogin {
 //		System.out.println("===回调接口openId===" + openId);
 //	}	
 	
-	@GetMapping("/callBack")
+	@GetMapping("/successPage")
 	protected void deGet()throws Exception {
 		System.out.println("===进入回调接口===");
 	}
