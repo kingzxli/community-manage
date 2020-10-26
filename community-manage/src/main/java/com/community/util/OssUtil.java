@@ -29,13 +29,12 @@ public class OssUtil {
 			businessType = "default";
 		}
 		
-		String fileName = IdMaker.get() +date + ext;		
+		String fileName = businessType +"/" + IdMaker.get() +date + ext;		
 		// 上传文件到指定的存储空间（bucketName）并将其保存为指定的文件名称（objectName）。
 		String url = null;
 		try {
 			ossClient.putObject(BUCKETNAME, fileName, new ByteArrayInputStream(file.getBytes()));
 			url = SUFFER_URL + fileName;
-			System.out.println("===上传成功===");
 		} catch (Exception e) {
 			e.printStackTrace();
 		} 
