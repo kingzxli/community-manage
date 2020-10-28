@@ -9,11 +9,11 @@ public class SendSms {
 	static final Integer TEMPLATEID = 743538;
 	static final String SMSSIGN = "昌盛物业";
 	
-	public static void sendSms(String phoneNumber, String code,String min) {
+	public static void sendSms(String phone, String code,String min) {
 		try {
 			String[] params = {"家和小区",code};
 			SmsSingleSender ssender = new SmsSingleSender(APPID, APPKEY);
-			SmsSingleSenderResult result = ssender.sendWithParam("86", phoneNumber, TEMPLATEID, params, SMSSIGN, "", "");
+			SmsSingleSenderResult result = ssender.sendWithParam("86", phone, TEMPLATEID, params, SMSSIGN, "", "");
 			System.out.println("===短信结果===" + result);
 		} catch (Exception e) {
 			e.printStackTrace();

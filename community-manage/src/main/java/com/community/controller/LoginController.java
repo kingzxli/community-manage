@@ -13,10 +13,10 @@ public class LoginController {
 	
 	@ApiOperation(value = "发送验证码")
 	@GetMapping("/sms/sendCode")
-	public Result<?> insert(String phoneNumber) {
+	public Result<?> insert(String phone) {
 		
 		String code = (Math.random()*9+1)*100000 + "";
-		SendSms.sendSms(phoneNumber, code, "");
+		SendSms.sendSms(phone, code, "");
 		return Result.SUCCESS;
 	}
 	
