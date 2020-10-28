@@ -14,10 +14,10 @@ public class SendSms {
 	static final Integer TEMPLATEID = 743617;
 	static final String SMSSIGN = "昌盛物业";		
 	
-	public static void sendCode(String phone) {
+	public static void sendCode(String phone,String code) {
 		try {
-			Integer code = (int)(Math.random()*9+1)*100000;
-			String[] params = {code.toString(),"10"};
+			
+			String[] params = {code,"10"};
 			SmsSingleSender ssender = new SmsSingleSender(APPID, APPKEY);
 			SmsSingleSenderResult result = ssender.sendWithParam("86", phone, TEMPLATEID, params, SMSSIGN, "", "");
 			System.out.println("===短信结果===" + result);
