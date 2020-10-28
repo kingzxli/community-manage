@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.BoundValueOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -494,4 +495,24 @@ public final class RedisUtil {
             return 0;
         }
     }
+    
+ // ================================Object=================================
+    public void oSet(String id, Object obj) {
+        BoundValueOperations<String, Object> boundOps = redisTemplate.boundValueOps(id);
+        boundOps.set(obj);
+    }
+
+    public void oSet(String id, Object obj, Integer minute) {
+        BoundValueOperations<String, Object> boundOps = redisTemplate.boundValueOps(id);
+        boundOps.set(obj);
+        if (minute != null) {
+            boundOps.expire(minute, TimeUnit.MINUTES);
+        }
+    }
+    
+    public Object oGet(String key) {
+        BoundValueOperations<String, Object> boundOps = redisTemplate.boundValueOps(key);
+        return boundOps.get();
+    }
+    
 }

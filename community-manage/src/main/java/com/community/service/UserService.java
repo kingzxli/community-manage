@@ -20,6 +20,4 @@ public interface UserService {
 
 	Integer importUserData(MultipartFile file);
 
-	void register(User user);
-
 }

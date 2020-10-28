@@ -54,25 +54,12 @@ public class UserServiceImpl implements UserService{
 		userMapper.insert(user);		
 	}
 	
-	@Override
-	public void register(User user) {
-		//查询是否有人员信息
-		User dbUser = userMapper.selectByPhone(user.getPhone());
-		if(dbUser == null) {
-			userMapper.insert(user);	
-		}else {
-			user.setId(dbUser.getId());
-			userMapper.updateById(user);
-		}							
-	}
-	
 	public String insertByPhone(String phone,String userName) {
 		User user = new User();
-		user.setPhone(phone);
-		user.setName(userName);
+		user.setPhone(phone);		
+		User dbUser = userMapper.selectOne(user);
 		
-		User dbUser = userMapper.selectByPhone(phone);		
-		
+		user.setName(userName);		
 		if(dbUser == null) {
 			user.setId(IdMaker.get());
 			user.setIsDelete(0);

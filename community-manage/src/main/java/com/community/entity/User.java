@@ -3,6 +3,7 @@ package com.community.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 
@@ -49,5 +50,9 @@ public class User implements Serializable{
 	
 	@ApiModelProperty(value = "修改时间")
 	private Date modifiedTime;
+	
+	@TableField(exist = false)
+	@ApiModelProperty(value = "验证码")
+	private String code;
 	
 }

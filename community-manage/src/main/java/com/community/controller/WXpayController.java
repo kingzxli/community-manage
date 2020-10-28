@@ -3,9 +3,13 @@ package com.community.controller;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.InetAddress;
+import java.net.URLEncoder;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -37,6 +41,46 @@ public class WXpayController {
 	private Wxpay wxpay;
 	@Autowired
 	private RestTemplate restTemplate;
+	
+	@ApiOperation(value = "获取code测试")
+	@GetMapping("/getCode")
+	public void wxLogin(HttpServletResponse response) throws IOException{
+		String redirectUri = URLEncoder.encode(wxpay.getRedirectUrl(), "UTF-8");
+		String url = "https://open.weixin.qq.com/connect/oauth2/authorize?" +
+				"appid=APPID" +
+				"&redirect_uri=REDIRECT_URI"+
+				"&response_type=code" +
+				"&scope=SCOPE" +
+				"&state=123#wechat_redirect";	      
+		String url2 = url.replace("APPID",wxpay.getAppId()).replace("REDIRECT_URI",redirectUri).replace("SCOPE","snsapi_base");
+		System.out.println("跳转回调接口");
+		response.sendRedirect(url2);
+	}
+	
+	/**
+	 * 获取openId
+	 * @param request
+	 * @param response
+	 * @throws Exception
+	 */
+	@ApiOperation(value = "获取openId")
+	@GetMapping("/getOpenId")
+	public Result<String> getOpenId(String code){
+		//获取回调地址中的code
+		System.out.println("===开始获取openId===");
+
+		String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + wxpay.getAppId() + "&secret="
+				+ wxpay.getAppSecret() + "&code=" + code + "&grant_type=authorization_code";
+	
+		ResponseEntity<String> result = restTemplate.postForEntity(url, null, String.class);
+		Assert.notNull(result, "=============获取openId失败==========");
+		
+		JSONObject jsonObject = JSONObject.parseObject(result.getBody());				
+		String openId = jsonObject.getString("openid");		
+		System.out.println("===openId===" + openId);
+		Assert.notEmpty(openId, "获取openId失败");
+		return new Result<>(openId);	  
+	}		   
 	
 	@ApiOperation(value = "微信支付")
 	@GetMapping("/wxpay")
@@ -151,29 +195,6 @@ public class WXpayController {
 		return result;		
 	}
 	
-	/**
-	 * 获取openId
-	 * @param request
-	 * @param response
-	 * @throws Exception
-	 */
-	@ApiOperation(value = "获取openId")
-	@GetMapping("/getOpenId")
-	public Result<String> getOpenId(String code){
-		//获取回调地址中的code
-		System.out.println("===开始获取openId===");
-
-		String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + wxpay.getAppId() + "&secret="
-				+ wxpay.getAppSecret() + "&code=" + code + "&grant_type=authorization_code";
 	
-		ResponseEntity<String> result = restTemplate.postForEntity(url, null, String.class);
-		Assert.notNull(result, "=============获取openId失败==========");
-		
-		JSONObject jsonObject = JSONObject.parseObject(result.getBody());				
-		String openId = jsonObject.getString("openid");		
-		System.out.println("===openId===" + openId);
-		Assert.notEmpty(openId, "获取openId失败");
-		return new Result<>(openId);	  
-	}		   
 
 }
