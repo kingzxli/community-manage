@@ -1,15 +1,10 @@
 package com.community.controller;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.community.entity.BaseCity;
 import com.community.entity.Page;
@@ -41,25 +36,25 @@ public class BaseCityController {
 		return new Result<>(baseCityService.getById(baseCityId));
 	}
 	
-	@ApiOperation(value = "修改")
-	@PutMapping("/baseCity")
-	public Result<?> update(@RequestBody BaseCity BaseCity) {
-		baseCityService.updateById(BaseCity);
-	 return Result.SUCCESS;
-	}
-	
-	@ApiOperation(value = "删除")
-	@DeleteMapping("/baseCity/{baseCityId}")
-	public Result<?> delete(@PathVariable(name="baseCityId") String baseCityId) {
-		baseCityService.delete(baseCityId);
-		return Result.SUCCESS;
-	}
-	
-	@ApiOperation(value = "新增")
-	@PostMapping("/baseCity")
-	public Result<?> insert(@RequestBody BaseCity baseCity) {				
-		baseCityService.insert(baseCity);
-		return Result.SUCCESS;
-	}
+//	@ApiOperation(value = "修改")
+//	@PutMapping("/baseCity")
+//	public Result<?> update(@RequestBody BaseCity BaseCity) {
+//		baseCityService.updateById(BaseCity);
+//	 return Result.SUCCESS;
+//	}
+//	
+//	@ApiOperation(value = "删除")
+//	@DeleteMapping("/baseCity/{baseCityId}")
+//	public Result<?> delete(@PathVariable(name="baseCityId") String baseCityId) {
+//		baseCityService.delete(baseCityId);
+//		return Result.SUCCESS;
+//	}
+//	
+//	@ApiOperation(value = "新增")
+//	@PostMapping("/baseCity")
+//	public Result<?> insert(@RequestBody BaseCity baseCity) {				
+//		baseCityService.insert(baseCity);
+//		return Result.SUCCESS;
+//	}
 
 }

@@ -2,6 +2,8 @@ package com.community.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.Length;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import io.swagger.annotations.ApiModel;
@@ -20,12 +22,15 @@ public class StoreCart implements Serializable{
 	@ApiModelProperty(value = "用户id")
 	private String userId;
 	
+	@NotNull(message = "商品id不能为空")
 	@ApiModelProperty(value = "商品Id")
 	private String goodsId;
 	
+	@Length(max = 32, message = "卖点描述输入超出最大长度(32)")
 	@ApiModelProperty(value = "卖点描述")
 	private String sellPoint;
 	
+	@NotNull(message = "商品数量不能为空")
 	@ApiModelProperty(value = "数量")
 	private Integer num;
 	

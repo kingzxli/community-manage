@@ -126,6 +126,18 @@
 		    <version>3.10.2</version>
 		</dependency>
 		
+		 <!--jsr 303验证对象字段-->
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+        </dependency>
+        <!-- hibernate validator 验证对象字段-->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>5.2.0.Final</version>
+        </dependency>
+		
 		<dependency>
 		    <groupId>junit</groupId>
 		    <artifactId>junit</artifactId>

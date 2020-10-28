@@ -2,6 +2,9 @@ package com.community.controller;
 
 import java.util.Date;
 import java.util.List;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +17,7 @@ import com.community.entity.Page;
 import com.community.entity.Result;
 import com.community.entity.StoreCart;
 import com.community.service.StoreCartService;
+import com.community.util.IdMaker;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -55,7 +59,8 @@ public class StoreCartController {
 	
 	@ApiOperation(value = "新增")
 	@PostMapping("/storeCart")
-	public Result<?> insert(@RequestBody StoreCart storeCart) {		
+	public Result<?> insert(@Valid @RequestBody StoreCart storeCart) {	
+		storeCart.setId(IdMaker.get());
 		storeCart.setIsDelete(0);
 		storeCart.setCreatedTime(new Date());
 		storeCartService.insert(storeCart);
