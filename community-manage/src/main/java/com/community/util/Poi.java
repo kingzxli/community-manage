@@ -13,7 +13,11 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.multipart.MultipartFile;
 import com.community.exception.CustomException;
 
-
+/**
+ * excel操作
+ * @author king
+ *
+ */
 public class Poi {
 	private static final String XLS = ".xls";
     private static final String XLSX = ".xlsx";

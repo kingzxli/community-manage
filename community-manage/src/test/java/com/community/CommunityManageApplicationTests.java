@@ -3,14 +3,14 @@ package com.community;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.redis.core.StringRedisTemplate;
+import com.community.util.RedisUtil;
 
 
 @SpringBootTest
 class CommunityManageApplicationTests {
 
 	 @Autowired
-	 StringRedisTemplate stringRedisTemplate;//操作字符串【常用】
+	 RedisUtil redisUtil;
 	 /**
      * redis的操作
      *
@@ -18,8 +18,9 @@ class CommunityManageApplicationTests {
     @Test
     public void test01(){
     	System.out.println("测试redis");
-    	stringRedisTemplate.opsForValue().append("msg", "hello");
-	    String msg = stringRedisTemplate.opsForValue().get("msg");
+    	redisUtil.set("hello", "king",10);
+    	
+	    String msg = (String)redisUtil.get("hello");
 
 	    System.out.println(msg);
      

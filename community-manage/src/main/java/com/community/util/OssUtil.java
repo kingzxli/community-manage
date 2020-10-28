@@ -8,15 +8,18 @@ import org.springframework.web.multipart.MultipartFile;
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
 
-
+/**
+ * 对象存储
+ * @author king
+ */
 public class OssUtil {
 	//外网访问节点。
 	private static String ENDPOINT = "oss-cn-guangzhou.aliyuncs.com";
-	private static String ACCESSKEYID = "LTAI4G43gt7FW1RcCoxwjKzG";
-	private static String ACCESSKEYSECRET = "xkyqTE8eW2xqNLUyGrnujltiUtyoy6";
-	private static String BUCKETNAME = "cswymanager";
+	private static String ACCESSKEYID = "LTAI4FixggGWvEDqPsDeFXcF";
+	private static String ACCESSKEYSECRET = "QrAK3hz2AnuDZj4NStpnROhXcd8ZC7";
+	private static String BUCKETNAME = "cswyimg";
 	//上传成功后返回的url
-	private static String SUFFER_URL = "http://cswymanager.oss-cn-guangzhou.aliyuncs.com/";
+	private static String SUFFER_URL = "http://cswyimg.oss-cn-guangzhou.aliyuncs.com/";
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 	
 	public static String upload(MultipartFile file,String businessType) {

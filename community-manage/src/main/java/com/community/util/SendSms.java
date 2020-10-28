@@ -3,6 +3,11 @@ package com.community.util;
 import com.github.qcloudsms.SmsSingleSender;
 import com.github.qcloudsms.SmsSingleSenderResult;
 
+/**
+ * 发送短信
+ * @author king
+ *
+ */
 public class SendSms {
 	static final Integer APPID = 1400436905;
 	static final String APPKEY = "64f6937c9e39a2d70e8e7ee0de996801";

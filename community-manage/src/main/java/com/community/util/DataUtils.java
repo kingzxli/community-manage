@@ -8,6 +8,11 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 
+/**
+ * 数据相关操作
+ * @author king
+ *
+ */
 public class DataUtils {
 	private static final String INTEGER_REX = "^[-\\+]?[\\d]*$";
 	private static final String INTEGER_DECIMAL_REX = "^[0-9]+(.[0-9]{1,3})?$";
