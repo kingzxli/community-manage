@@ -5,7 +5,7 @@ import com.community.exception.CustomException;
 /**
  * 断言
  */
-public class Asserter {
+public class Assert {
 
 	/**
 	 * 断言表达式结果为是，否则抛出异常

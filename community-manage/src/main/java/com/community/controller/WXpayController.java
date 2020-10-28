@@ -23,7 +23,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.community.entity.Result;
 import com.community.entity.Wxpay;
 import com.community.exception.CustomException;
-import com.community.util.Asserter;
+import com.community.util.Assert;
 import com.community.util.IdMaker;
 import com.github.wxpay.sdk.WXPayUtil;
 import io.swagger.annotations.Api;
@@ -41,8 +41,8 @@ public class WXpayController {
 	@ApiOperation(value = "微信支付")
 	@GetMapping("/wxpay")
 	public Result<Map<String,String>> wxpay(String openId,BigDecimal totalFee) throws IOException {	
-		Asserter.notEmpty(openId, "openId不能为空");
-		Asserter.notNull(totalFee, "金额不能为空");	
+		Assert.notEmpty(openId, "openId不能为空");
+		Assert.notNull(totalFee, "金额不能为空");	
 			
 		Map<String,String> map = this.wxpayRequest(totalFee,openId);
 		return new Result<>(map);	
@@ -87,8 +87,8 @@ public class WXpayController {
 			responseDataMap = WXPayUtil.xmlToMap(responseDataXml);		
 			
 			//判断支付结果	
-			Asserter.isTrue(responseDataMap != null && "SUCCESS".equals(responseDataMap.get("return_code")), "支付通讯失败");		
-			Asserter.isTrue("SUCCESS".equals(responseDataMap.get("result_code")), "支付失败");
+			Assert.isTrue(responseDataMap != null && "SUCCESS".equals(responseDataMap.get("return_code")), "支付通讯失败");		
+			Assert.isTrue("SUCCESS".equals(responseDataMap.get("result_code")), "支付失败");
 			System.out.println(responseDataMap);
 			
 			/**
@@ -167,12 +167,12 @@ public class WXpayController {
 				+ wxpay.getAppSecret() + "&code=" + code + "&grant_type=authorization_code";
 	
 		ResponseEntity<String> result = restTemplate.postForEntity(url, null, String.class);
-		Asserter.notNull(result, "=============获取openId失败==========");
+		Assert.notNull(result, "=============获取openId失败==========");
 		
 		JSONObject jsonObject = JSONObject.parseObject(result.getBody());				
 		String openId = jsonObject.getString("openid");		
 		System.out.println("===openId===" + openId);
-		Asserter.notEmpty(openId, "获取openId失败");
+		Assert.notEmpty(openId, "获取openId失败");
 		return new Result<>(openId);	  
 	}		   
 

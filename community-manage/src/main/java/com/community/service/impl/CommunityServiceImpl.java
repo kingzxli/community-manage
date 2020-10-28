@@ -4,11 +4,11 @@ import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.community.entity.Community;
 import com.community.mapper.CommunityMapper;
 import com.community.service.CommunityService;
+import com.community.util.Assert;
 import com.community.util.IdMaker;
 
 @Service

@@ -2,13 +2,13 @@ package com.community.controller;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import com.community.entity.Result;
 import com.community.exception.CustomException;
+import com.community.util.Assert;
 import com.community.util.OssUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

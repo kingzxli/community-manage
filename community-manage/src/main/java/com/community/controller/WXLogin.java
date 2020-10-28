@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import com.alibaba.fastjson.JSONObject;
 import com.community.entity.Wxpay;
-import com.community.util.Asserter;
+import com.community.util.Assert;
 import io.swagger.annotations.ApiOperation;
 
 @RestController

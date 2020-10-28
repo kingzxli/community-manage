@@ -2,7 +2,6 @@ package com.community.controller;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,6 +9,7 @@ import com.community.entity.BaseCity;
 import com.community.entity.Page;
 import com.community.entity.Result;
 import com.community.service.BaseCityService;
+import com.community.util.Assert;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
