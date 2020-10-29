@@ -39,7 +39,7 @@ public class LoginController {
 		return Result.SUCCESS;
 	}
 	
-	@ApiOperation(value = "登录")
+	@ApiOperation(value = "登录(openId 或者 手机+验证码)")
 	@GetMapping("/doLogin")
 	public Result<Map<String, Object>> sendCode(User user) {
 		String openId = user.getOpenId();
@@ -85,7 +85,7 @@ public class LoginController {
 		Assert.notEmpty(openId,"openId不能为空");
 		Assert.notEmpty(phone,"手机号不能为空");
 		Assert.notEmpty(code,"验证码不能为空");
-		Assert.notEmpty(dbCode,"验证码错误");
+		Assert.isTrue(code.equals(dbCode),"验证码错误");
 		
 		//查询是否有人员信息
 		User para = new User();
