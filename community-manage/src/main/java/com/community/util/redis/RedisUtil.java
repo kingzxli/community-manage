@@ -1,4 +1,4 @@
-package com.community.util;
+package com.community.util.redis;
 
 import java.util.List;
 import java.util.Map;

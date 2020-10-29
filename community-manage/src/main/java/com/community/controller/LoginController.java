@@ -15,8 +15,9 @@ import com.community.exception.CustomException;
 import com.community.mapper.UserMapper;
 import com.community.util.Assert;
 import com.community.util.IdMaker;
-import com.community.util.RedisUtil;
 import com.community.util.SendSms;
+import com.community.util.redis.RedisUtil;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 

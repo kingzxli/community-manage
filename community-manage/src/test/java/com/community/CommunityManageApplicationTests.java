@@ -3,7 +3,8 @@ package com.community;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import com.community.util.RedisUtil;
+
+import com.community.util.redis.RedisUtil;
 
 
 @SpringBootTest
