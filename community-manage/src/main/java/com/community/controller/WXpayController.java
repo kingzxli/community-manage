@@ -195,6 +195,9 @@ public class WXpayController {
 		return result;		
 	}
 	
-	
+	@GetMapping("/test")
+	protected String deGet(){
+		return wxpay.getTest();
+	}
 
 }

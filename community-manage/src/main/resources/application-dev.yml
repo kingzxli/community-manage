@@ -1,0 +1,54 @@
+## mysql
+spring:
+  datasource:
+    url:  jdbc:mysql://106.52.167.184:3306/community?useUnicode=true&characterEncoding=utf-8&autoReconnect=true&useSSL=false
+    username: root
+    password: pwkingzxli1991
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+  ## 跨域请求
+  mvc:
+    dispatch-options-request: true
+   # redis配置
+  redis: 
+    host: 106.52.167.184
+    port: 6379
+    password: king
+    timeout: 500
+    jedis:
+      pool:
+        max-wait: -1   # 连接池最大阻塞等待时间（使用负值表示没有限制
+        max-idle: 10   # 连接池中的最大空闲连接
+        max-active: 100  # 连接池最大连接数（使用负值表示没有限制
+        min-idle: 3     # 连接池中的最小空闲连接
+    
+# 输出sql
+logging:
+  level:
+    com.community.mapper: debug
+    
+# mybatisplus 逻辑删除
+mybatis-plus:
+  global-config:
+    db-config:     
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+
+
+
+        
+# 微信支付参数
+wxpay:
+  appId: wx23db2e5b441b70fc
+  mchId: 1601076593
+  notifyUrl: http://changshengwuye.cn/successPage
+  key: changshengwuye202009081737qwaszx
+  wxpayUrl: https://api.mch.weixin.qq.com/pay/unifiedorder
+  appSecret: a020abed743a29c5e89eefe033d5249b
+  redirectUrl: http://changshengwuye.cn/callBack
+  responseLoginUrl: http://changshengwuye.cn:8001/zcw/#/payTheFees
+  responseRegisterUrl: http://changshengwuye.cn:8001/zcw/#/presentation
+  test: dev
+    
+    

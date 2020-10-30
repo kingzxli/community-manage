@@ -15,7 +15,8 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class DataUtils {
 	private static final String INTEGER_REX = "^[-\\+]?[\\d]*$";
-	private static final String INTEGER_DECIMAL_REX = "^[0-9]+(.[0-9]{1,3})?$";
+	private static final String INTEGER_DECIMAL_REX2 = "^[0-9]+(.[0-9]{1,3})?$";
+	private static final String INTEGER_DECIMAL_REX = "^[0-9]+(.[0-9]+)?$";
 	private static String REGEX = "^(\\-{0,1})\\d{1,11}(\\.\\d{1,4})?$";
     private static Pattern PATTERN = Pattern.compile(REGEX);
 	
@@ -48,6 +49,20 @@ public class DataUtils {
 	 * 
 	 * @author Rex.Tan
 	 * @date 2020年6月2日 下午3:18:34
+	 * @param str
+	 * @return
+	 */
+	public static boolean isIntegerAndDecimal2(String str) {
+		if (StringUtils.isBlank(str)) {
+			return false;
+		}
+		Pattern pattern = Pattern.compile(INTEGER_DECIMAL_REX2);
+
+		return pattern.matcher(str).matches();
+	}
+	
+	/**
+	 * 验证是否数字,小数位不限
 	 * @param str
 	 * @return
 	 */

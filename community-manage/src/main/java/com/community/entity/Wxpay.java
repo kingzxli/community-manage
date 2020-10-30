@@ -47,4 +47,5 @@ public class Wxpay implements Serializable{
 	 * 获取用户信息失败转发地址
 	 */
 	private String responseRegisterUrl;
+	private String test;
 }
