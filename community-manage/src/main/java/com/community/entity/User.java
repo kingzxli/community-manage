@@ -26,8 +26,8 @@ public class User implements Serializable{
 	@ApiModelProperty(value = "电话")
 	private String phone;
 	
-	@ApiModelProperty(value = "角色Id")
-	private String roleId;
+	@ApiModelProperty(value = "角色(1:管理员,2:租客,3:游客)")
+	private Integer roleId;
 	
 	@ApiModelProperty(value = "头像")
 	private String image;

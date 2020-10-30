@@ -67,7 +67,7 @@ public class WXpayController {
 	@GetMapping("/getOpenId")
 	public Result<String> getOpenId(String code){
 		//获取回调地址中的code
-		System.out.println("===开始获取openId===");
+		System.out.println("===开始获取openId:"+code+"===");
 
 		String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + wxpay.getAppId() + "&secret="
 				+ wxpay.getAppSecret() + "&code=" + code + "&grant_type=authorization_code";

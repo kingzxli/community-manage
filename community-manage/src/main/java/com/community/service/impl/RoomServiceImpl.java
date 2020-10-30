@@ -34,11 +34,7 @@ public class RoomServiceImpl implements RoomService{
 		 * 生活垃圾处理费 96/年
 		 * 车位费 360/年
 		 */
-		for(RoomVo dbRoom : list) {
-			if("13333333333".equals(dbRoom.getPhone()) || "18888888888".equals(dbRoom.getPhone())) {
-				dbRoom.setBillAmount(new BigDecimal("0.01"));
-				continue;
-			}
+		for(RoomVo dbRoom : list) {			
 			BigDecimal billAmount = new BigDecimal(0);
 			//1:住宅,2:商铺,3:车库
 			Integer type = dbRoom.getType();

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.community.entity.Result;
 import com.community.entity.User;
-import com.community.exception.CustomException;
 import com.community.mapper.UserMapper;
 import com.community.util.Assert;
 import com.community.util.IdMaker;
@@ -71,7 +70,7 @@ public class LoginController {
 			result.put("user", dbUser);
 			return new Result<>(result);
 		}else {
-			throw new CustomException("登录失败");
+			return new Result<>(null);
 		}	 
 	}
 	
@@ -96,6 +95,7 @@ public class LoginController {
 		if(dbUser == null) {
 			user.setId(IdMaker.get());
 			user.setIsDelete(0);
+			user.setRoleId(3);
 			user.setCreatedTime(new Date());
 			userMapper.insert(user);	
 		}else {

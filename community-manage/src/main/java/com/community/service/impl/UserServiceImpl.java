@@ -62,6 +62,7 @@ public class UserServiceImpl implements UserService{
 		user.setName(userName);		
 		if(dbUser == null) {
 			user.setId(IdMaker.get());
+			user.setRoleId(2);
 			user.setIsDelete(0);
 			user.setCreatedUser("system");
 			user.setCreatedTime(new Date());
