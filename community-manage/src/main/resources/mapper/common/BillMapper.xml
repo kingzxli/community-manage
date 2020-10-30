@@ -7,6 +7,7 @@
 		SELECT
 			a.id,
 			a.pay_amount,
+			a.bill_type,
 			a.remark,
 			a.pay_phone,
 			a.pay_name,
@@ -18,7 +19,7 @@
 			b.type 
 		FROM
 			bill a
-			LEFT JOIN room b ON a.room_id = b.id
+			LEFT JOIN room b ON a.item_id = b.id
 			LEFT JOIN community c ON b.community_id = c.id
 			LEFT JOIN community d ON d.id = c.parent_id
 			LEFT JOIN community e ON e.id = d.parent_id 
@@ -33,8 +34,11 @@
 		<if test="communityId != null and communityId != '' ">			
 			AND c.community_id = #{communityId}
 		</if>
-		<if test="roomId != null and roomId != '' ">			
-			AND a.room_id = #{roomId}
+		<if test="itemId != null and itemId != '' ">			
+			AND a.item_id = #{itemId}
+		</if>
+		<if test="billType != null ">			
+			AND a.bill_type = #{billType}
 		</if>
 		<if test="startDate != null ">			
 			AND a.created_time &gt;= #{startDate}
