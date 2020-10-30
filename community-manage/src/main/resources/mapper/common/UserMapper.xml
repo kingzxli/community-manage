@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.community.mapper.common.UserMapper">
+
+	<select id="selectOne" parameterType="com.community.entity.common.User" resultType="com.community.entity.common.User">
+		SELECT
+			name,
+			phone,
+			role_id,
+			image,
+			open_id
+		FROM			
+			user 
+		WHERE
+			is_delete = 0		
+		<if test="openId != null and openId != '' ">
+			AND open_id = #{openId}	
+		</if>
+		<if test="phone != null and phone != '' ">
+			AND phone = #{phone}	
+		</if>
+	</select>	
+	
+
+</mapper>
+	
+	
+	
+	
+	

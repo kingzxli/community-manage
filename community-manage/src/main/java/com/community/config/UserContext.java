@@ -1,6 +1,6 @@
 package com.community.config;
 
-import com.community.entity.User;
+import com.community.entity.common.User;
 
 /**
  * 用户上下文
