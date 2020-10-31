@@ -62,9 +62,8 @@ public class LoginController {
 		if(dbUser != null) {
 			Map<String, Object> result = new HashMap<>();
 			String token = IdMaker.getSnowflakeId();
-			System.out.println("===token===" + token);
 			//设置token过期时间12小时
-			redisUtil.oSet(token, user,720);
+			redisUtil.oSet(token, dbUser,720);
 
 			result.put("token", token);
 			result.put("user", dbUser);

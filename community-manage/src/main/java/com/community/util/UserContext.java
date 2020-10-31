@@ -1,4 +1,4 @@
-package com.community.config;
+package com.community.util;
 
 import com.community.entity.common.User;
 
@@ -30,7 +30,4 @@ public class UserContext {
 		CONTEXT.remove();
 	}
 	
-	public static void clear() {
-		CONTEXT.remove();
-	}
 }

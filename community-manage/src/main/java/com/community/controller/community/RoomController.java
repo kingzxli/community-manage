@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.community.entity.common.Page;
 import com.community.entity.common.Result;
 import com.community.entity.community.Room;
 import com.community.service.community.RoomService;
+import com.community.util.UserContext;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -62,7 +62,7 @@ public class RoomController {
 		
 		room.setIsDelete(0);
 		room.setCreatedTime(new Date());
-		
+		room.setCreatedUser(UserContext.get().getUserName());
 		roomService.insert(room);
 		return Result.SUCCESS;
 	}

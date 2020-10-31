@@ -58,4 +58,10 @@ public class User implements Serializable{
 	@ApiModelProperty(value = "验证码")
 	private String code;
 	
+	
+	@TableField(exist = false)
+	@ApiModelProperty(value = "跟踪id")
+	private String TraceId;
+	
+	
 }

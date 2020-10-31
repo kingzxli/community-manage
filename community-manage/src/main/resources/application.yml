@@ -1,6 +1,7 @@
 server:
   port: 8081
   
+## 切换环境：java -jar xxx.jar --spring.profiles.active=dev  
 spring:
   # 环境 dev开发时用环境 | test测试环境 | pro上线时用环境
   profiles:
@@ -11,5 +12,3 @@ spring:
     multipart:
       max-file-size: 10MB
       max-request-size: 10MB
-    
-## 切换环境：java -jar xxx.jar --spring.profiles.active=dev
