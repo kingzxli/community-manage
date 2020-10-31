@@ -1,9 +1,6 @@
 package com.community.service.common;
 
 import java.util.List;
-
-import org.springframework.web.multipart.MultipartFile;
-
 import com.community.entity.common.User;
 
 public interface UserService {
@@ -17,7 +14,5 @@ public interface UserService {
 	void updateById(User user);
 
 	void insert(User user);
-
-	Integer importUserData(MultipartFile file);
 
 }

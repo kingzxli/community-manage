@@ -5,7 +5,7 @@
 
 	<select id="selectOne" parameterType="com.community.entity.common.User" resultType="com.community.entity.common.User">
 		SELECT
-			name,
+			user_name,
 			phone,
 			role_id,
 			image,

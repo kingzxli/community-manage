@@ -23,13 +23,13 @@ public class User implements Serializable{
 	private String id;
 	
 	@ApiModelProperty(value = "姓名")
-	private String name;
+	private String userName;
 	
 	@NotNull(message = "电话不能为空")
 	@ApiModelProperty(value = "电话")
 	private String phone;
 	
-	@ApiModelProperty(value = "角色(1:管理员,2:租客,3:游客)")
+	@ApiModelProperty(value = "角色(1:管理员,2:游客)")
 	private Integer roleId;
 	
 	@ApiModelProperty(value = "头像")

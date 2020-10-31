@@ -3,36 +3,27 @@
 
 <mapper namespace="com.community.mapper.community.RoomMapper">
 
-	<select id="roomList" resultType="com.community.entity.community.vo.RoomVo" parameterType="com.community.entity.community.vo.RoomVo">
+	<select id="roomList" resultType="com.community.entity.community.Room" parameterType="com.community.entity.community.Room">
 		SELECT
-			a.id,
-			b.name,
-			b.phone,
-			a.community_id,
-			a.room_name,
-			a.area,
-			a.type 
+			id,
+			community_id,
+			room_name,
+			area,
+			type 
 		FROM
-			room a
-			LEFT JOIN user b ON b.id = a.user_id 			
+			room 
 		WHERE
-			a.is_delete = 0
-		<if test="name != null and name != '' ">			
-			AND b.name = #{name}
-		</if>
-		<if test="phone != null and phone != '' ">			
-			AND b.phone = #{phone}
-		</if>		
+			is_delete = 0	
 		<if test="communityId != null and communityId != '' ">			
-			AND a.community_id = #{communityId}
+			AND community_id = #{communityId}
 		</if>
 		<if test="roomName != null and roomName != '' ">			
-			AND a.room_name = #{roomName}
+			AND room_name = #{roomName}
 		</if>
 		<if test="type != null ">			
-			AND a.type = #{type}
+			AND type = #{type}
 		</if>
-		ORDER BY a.room_name * 1
+		ORDER BY room_name * 1
 	</select>
 
 </mapper>

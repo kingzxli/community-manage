@@ -3,12 +3,9 @@ package com.community.entity.community;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-
 import javax.validation.constraints.NotNull;
-
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -35,8 +32,8 @@ public class Room implements Serializable{
 	@ApiModelProperty(value = "类型(1:住宅,,2:商铺,3:车库)")
 	private Integer type;
 	
-	@ApiModelProperty(value = "租户")
-	private String userId;
+	@ApiModelProperty(value = "租户姓名")
+	private String userName;
 	
 	@ApiModelProperty(value = "是否删除(1:是，0:否)")
 	@TableLogic

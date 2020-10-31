@@ -5,11 +5,10 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.community.entity.community.Room;
-import com.community.entity.community.vo.RoomVo;
 
 
 @Mapper
 public interface RoomMapper extends BaseMapper<Room>{
 
-	List<RoomVo> roomList(RoomVo room);
+	List<Room> roomList(Room room);
 }

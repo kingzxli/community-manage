@@ -9,12 +9,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.community.entity.common.Page;
 import com.community.entity.common.Result;
 import com.community.entity.community.Room;
-import com.community.entity.community.vo.RoomVo;
 import com.community.service.community.RoomService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -29,10 +30,10 @@ public class RoomController {
 	
 	@ApiOperation(value = "列表查询")
 	@GetMapping("/room")
-	public Result<List<RoomVo>> list(Page page,RoomVo room) {	
+	public Result<List<Room>> list(Page page,Room room) {	
 		page.paging();			
-		List<RoomVo> list = roomService.list(room);		
-		return new Result<>(list).total(new PageInfo<RoomVo>(list).getTotal());
+		List<Room> list = roomService.list(room);		
+		return new Result<>(list).total(new PageInfo<Room>(list).getTotal());
 	}
 	
 	@ApiOperation(value = "单记录查询")
@@ -64,6 +65,16 @@ public class RoomController {
 		
 		roomService.insert(room);
 		return Result.SUCCESS;
+	}
+	
+	/**
+	 * 导入
+	 * @param file
+	 */
+	@PostMapping("/import/room")
+	public Result<Integer> importRoomDate(@RequestParam("file") MultipartFile file) {
+		Integer num =roomService.importRoomData(file);
+		return new Result<Integer>(num);
 	}
 
 }

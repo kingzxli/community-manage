@@ -1,16 +1,14 @@
 package com.community.service.community;
 
-import java.math.BigDecimal;
 import java.util.List;
-
+import org.springframework.web.multipart.MultipartFile;
 import com.community.entity.community.Room;
-import com.community.entity.community.vo.RoomVo;
 
 public interface RoomService {
 
 	Room getById(String roomId);
 
-	List<RoomVo> list(RoomVo room);
+	List<Room> list(Room room);
 
 	void delete(String roomId);
 
@@ -18,6 +16,6 @@ public interface RoomService {
 
 	void insert(Room room);
 	
-	void insertByName(String communityId,String roomName,BigDecimal area,Integer type,String userId);
+	Integer importRoomData(MultipartFile file);
 
 }
