@@ -9,7 +9,8 @@
 			community_id,
 			room_name,
 			area,
-			type 
+			type,
+			user_name 
 		FROM
 			room 
 		WHERE
