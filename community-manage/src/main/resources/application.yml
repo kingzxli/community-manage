@@ -5,7 +5,7 @@ server:
 spring:
   # 环境 dev开发时用环境 | test测试环境 | pro上线时用环境
   profiles:
-    active: dev1
+    active: dev
   main:
     allow-bean-definition-overriding: true
   servlet:
