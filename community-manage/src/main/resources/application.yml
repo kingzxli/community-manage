@@ -1,7 +1,7 @@
 server:
   port: 8081
   
-## 切换环境：java -jar xxx.jar --spring.profiles.active=dev  
+## 切换环境：java -jar xxx.jar --spring.profiles.active=dev  d
 spring:
   # 环境 dev开发时用环境 | test测试环境 | pro上线时用环境
   profiles:
