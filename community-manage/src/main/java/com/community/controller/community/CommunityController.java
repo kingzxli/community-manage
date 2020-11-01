@@ -26,7 +26,7 @@ public class CommunityController {
 	@Autowired
 	private CommunityService communityService;
 	
-	@ApiOperation(value = "列表查询(level必填 1:楼盘2:楼栋3:单元1 )")
+	@ApiOperation(value = "列表查询(level必填 1:楼盘2:楼栋3:单元hb)")
 	@GetMapping("/community")
 	public Result<List<Community>> list(Page page,Community community) {
 		page.paging();	
