@@ -71,7 +71,7 @@ public class RequestAop {
     	HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 		String url = request.getRequestURI();  
 		//需要登录才能访问
-		if(!LOGIN_URL.contains(url)) {
+		if(!LOGIN_URL.contains(url) && url.indexOf("community")==-1 && url.indexOf("repair")==-1 && url.indexOf("room")==-1) {
 			String token = request.getHeader("token");
 			if(!"token".equals(token)) {
 				Assert.notEmpty(token, "token不能为空");
