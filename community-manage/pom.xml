@@ -134,10 +134,10 @@
 		</dependency>
 		
 		 <!--jsr 303验证对象字段-->
-        <dependency>
+       <!--  <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
-        </dependency>
+        </dependency> -->
         <!-- hibernate validator 验证对象字段-->
         <dependency>
             <groupId>org.hibernate</groupId>

@@ -32,7 +32,7 @@ public class RoomController {
 	@GetMapping("/room")
 	public Result<List<Room>> list(Page page,Room room) {	
 		page.paging();			
-		List<Room> list = roomService.list(room);		
+		List<Room> list = roomService.list(room);	
 		return new Result<>(list).total(new PageInfo<Room>(list).getTotal());
 	}
 	
